@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎁 Your Birthday Gifts!</title>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Comfortaa:wght@400;600;700&family=Great+Vibes&family=Righteous&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Comfortaa',cursive;
+  background:#0d0020; color:#fff;
+  min-height:100vh; overflow-x:hidden;
+}
+
+.stars {
+  position:fixed; inset:0; z-index:0;
+  background:radial-gradient(ellipse at 30% 40%,#1e0045 0%,#0d0020 70%);
+}
+.stars::before,.stars::after {
+  content:''; position:absolute; width:2px; height:2px; border-radius:50%;
+  box-shadow:
+    55px 85px #fff,125px 205px #ffd700,255px 55px #fff,325px 305px #ff6eb4,
+    455px 155px #fff,555px 405px #fff,685px 85px #c084fc,785px 255px #fff,
+    905px 355px #ffd700,1105px 105px #fff,1205px 455px #ff6eb4,
+    85px 455px #fff,205px 505px #ffd700,355px 425px #fff,605px 505px #c084fc,
+    755px 485px #fff,955px 525px #ffd700;
+  animation:twinkle 3s infinite alternate;
+}
+.stars::after {
+  box-shadow:
+    35px 155px #fff,155px 305px #ffd700,285px 185px #ff6eb4,405px 85px #fff,
+    525px 285px #c084fc,645px 355px #fff,825px 155px #ffd700,1005px 285px #fff,
+    1155px 355px #ff6eb4,105px 375px #fff,305px 605px #c084fc;
+  animation-delay:1.5s;
+}
+@keyframes twinkle{ from{opacity:0.3;} to{opacity:1;} }
+
+.hearts-bg{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.h-heart{ position:absolute; bottom:-50px; animation:riseHeart linear infinite; opacity:0.12; }
+@keyframes riseHeart{
+  0%  { transform:translateY(0) rotate(0); opacity:0.13; }
+  100%{ transform:translateY(-110vh) rotate(360deg); opacity:0; }
+}
+
+/* ===== PAGE ===== */
+.page {
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:40px 20px 60px;
+}
+
+/* ===== HEADER ===== */
+.gifts-header { text-align:center; margin-bottom:44px; }
+.header-emoji { font-size:3.2rem; animation:bounce 1.2s infinite alternate; display:block; margin-bottom:10px; }
+@keyframes bounce{ from{transform:translateY(0);} to{transform:translateY(-14px);} }
+.gifts-title {
+  font-family:'Lobster',cursive;
+  font-size:clamp(2.2rem,6vw,3.8rem);
+  background:linear-gradient(135deg,#ffd700,#ff6eb4,#c084fc);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  letter-spacing:3px; margin-bottom:10px;
+  animation:glow 2.5s infinite alternate;
+}
+@keyframes glow{
+  from{ filter:drop-shadow(0 0 8px rgba(255,215,0,0.4)); }
+  to  { filter:drop-shadow(0 0 28px rgba(255,110,180,0.8)); }
+}
+.gifts-sub {
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(1.4rem,3.5vw,2rem);
+  color:#c084fc; margin-bottom:6px;
+}
+.gifts-hint {
+  font-family:'Comfortaa',cursive;
+  color:#7040a0; font-size:0.88rem; letter-spacing:1px;
+}
+
+/* ===== GIFT GRID — 3 cards shown initially ===== */
+.gifts-grid {
+  display:flex; gap:24px; justify-content:center; flex-wrap:wrap;
+  margin-bottom:44px; width:100%;
+  transition: all 0.5s ease;
+}
+
+/* ===== GIFT CARD ===== */
+.gift-card {
+  width:230px; cursor:pointer; perspective:800px;
+  transition: opacity 0.5s ease, transform 0.5s ease, width 0.5s ease;
+}
+
+/* When another card is selected — hide the unchosen ones */
+.gift-card.hidden-card {
+  opacity:0;
+  pointer-events:none;
+  width:0;
+  overflow:hidden;
+  margin:0;
+  padding:0;
+  transform:scale(0.6);
+}
+
+/* When ONE card is chosen — expand it */
+.gift-card.chosen {
+  width: min(400px, 85vw);
+}
+
+.gift-inner {
+  position:relative; width:100%;
+  transition:transform 0.85s cubic-bezier(0.34,1.2,0.64,1);
+  transform-style:preserve-3d;
+}
+.gift-card.opened .gift-inner { transform:rotateY(180deg); }
+
+.gift-front, .gift-back {
+  backface-visibility:hidden;
+  border-radius:24px;
+  padding:22px 16px 22px;
+  min-height:360px;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+}
+
+/* FRONT */
+.gift-front {
+  background:linear-gradient(145deg,#1a0035,#2d005a);
+  border:2px solid rgba(255,215,0,0.3);
+  box-shadow:0 0 30px rgba(192,132,252,0.2);
+  transition:box-shadow 0.3s, border-color 0.3s;
+  position:relative; overflow:hidden;
+}
+.gift-card:hover .gift-front {
+  box-shadow:0 0 55px rgba(255,110,180,0.45);
+  border-color:rgba(255,110,180,0.6);
+}
+
+/* BACK */
+.gift-back {
+  position:absolute; inset:0;
+  transform:rotateY(180deg);
+  border:2px solid #ffd700;
+  box-shadow:0 0 50px rgba(255,110,180,0.5);
+  overflow:hidden; border-radius:24px;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  padding:0; /* remove padding so image fills top */
+}
+#gift1 .gift-back { background:linear-gradient(145deg,#ff6eb4,#c084fc); }
+#gift2 .gift-back { background:linear-gradient(145deg,#ffd700,#ff9500); }
+#gift3 .gift-back { background:linear-gradient(145deg,#c084fc,#818cf8); }
+
+/* Ripple */
+.touch-ripple {
+  position:absolute; inset:0; border-radius:24px;
+  border:2px solid rgba(255,215,0,0.5);
+  animation:ripple 1.6s infinite;
+  pointer-events:none;
+}
+@keyframes ripple{
+  0%  { transform:scale(1); opacity:0.8; }
+  100%{ transform:scale(1.07); opacity:0; }
+}
+
+/* ===== FRONT IMAGE BOX ===== */
+.front-img-box {
+  width:100%; height:150px;
+  border-radius:16px; overflow:hidden;
+  margin-bottom:14px;
+  background:rgba(255,255,255,0.05);
+  border:1.5px dashed rgba(255,215,0,0.3);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; flex-shrink:0;
+}
+.gift-front-img {
+  width:100%; height:100%;
+  object-fit:cover;        /* fills the box, crops if needed */
+  object-position:center;
+  border-radius:14px; display:block;
+}
+.img-placeholder {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.img-placeholder-icon { font-size:2.2rem; opacity:0.35; }
+.img-placeholder-txt {
+  font-family:'Comfortaa',cursive;
+  font-size:0.65rem; color:rgba(255,215,0,0.35); letter-spacing:1px;
+}
+
+/* ===== BACK IMAGE BOX — fills the full card top area ===== */
+.back-img-box {
+  width:100%;
+  flex:1;                  /* take all available vertical space */
+  min-height:0;
+  overflow:hidden;
+  border-radius:22px 22px 0 0; /* round only top corners */
+  display:flex; align-items:stretch;
+}
+.gift-back-img {
+  width:100%; height:100%;
+  object-fit:cover;        /* fills completely — no gaps, no squish */
+  object-position:center;
+  display:block;
+}
+
+/* Back text area */
+.back-info {
+  width:100%; padding:12px 14px 16px;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  flex-shrink:0;
+}
+.back-icon { font-size:2rem; }
+.gift-name {
+  font-family:'Righteous',cursive;
+  font-size:1rem; color:rgba(255,255,255,0.95);
+  letter-spacing:1px; text-align:center;
+}
+.gift-price {
+  font-family:'Orbitron',sans-serif;
+  font-size:1.5rem; color:#fff;
+  letter-spacing:3px;
+  text-shadow:0 0 14px rgba(255,255,255,0.5);
+}
+.gift-hearts { font-size:1.1rem; letter-spacing:4px; }
+
+/* Front bottom info */
+.gift-icon { font-size:2.8rem; margin-bottom:8px; animation:wiggle 2s infinite; }
+@keyframes wiggle{ 0%,100%{transform:rotate(-5deg);} 50%{transform:rotate(5deg);} }
+.gift-label { font-family:'Righteous',cursive; font-size:1rem; color:#d4a0ff; letter-spacing:2px; margin-bottom:4px; }
+.gift-tap-hint { font-family:'Comfortaa',cursive; font-size:0.72rem; color:#7040a0; }
+
+/* ===== "CHOOSE AGAIN" BUTTON ===== */
+.choose-again-btn {
+  display:none;
+  margin-top:18px;
+  padding:12px 36px;
+  background:rgba(255,255,255,0.1);
+  border:1.5px solid rgba(255,110,180,0.5);
+  border-radius:50px; color:#ff6eb4;
+  font-family:'Righteous',cursive; font-size:0.95rem; letter-spacing:2px;
+  cursor:pointer; transition:background 0.2s, transform 0.2s;
+}
+.choose-again-btn:hover { background:rgba(255,110,180,0.2); transform:translateY(-2px); }
+
+/* ===== FOOTER ===== */
+.gifts-footer { text-align:center; margin-top:8px; }
+.footer-msg {
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(1.5rem,3.5vw,2rem);
+  color:#ffd700; margin-bottom:20px;
+  text-shadow:0 0 16px rgba(255,215,0,0.35);
+}
+.back-btn {
+  display:inline-block; padding:15px 46px;
+  background:linear-gradient(135deg,#ff6eb4,#c084fc);
+  border:none; border-radius:50px; color:#fff;
+  font-family:'Righteous',cursive; font-size:1rem; letter-spacing:2px;
+  cursor:pointer; text-decoration:none;
+  transition:transform 0.2s, box-shadow 0.2s;
+  box-shadow:0 6px 28px rgba(255,110,180,0.35);
+}
+.back-btn:hover{ transform:translateY(-4px); box-shadow:0 16px 40px rgba(255,110,180,0.55); }
+
+/* Particles */
+.particle{
+  position:fixed; pointer-events:none; z-index:999;
+  animation:float-up 3s ease-in forwards;
+}
+@keyframes float-up{
+  0%  { opacity:1; transform:translateY(0) rotate(0deg); }
+  100%{ opacity:0; transform:translateY(-100vh) rotate(720deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="gifts-header">
+    <span class="header-emoji">🎁 🎀 🎁</span>
+    <div class="gifts-title">Birthday Gifts!</div>
+    <div class="gifts-sub">Just for Sidu Moonji Beniksha 💝</div>
+    <div class="gifts-hint" id="hintText">👆 Tap / Click one gift box to reveal your surprise!</div>
+  </div>
+
+  <!-- GIFTS -->
+  <div class="gifts-grid" id="giftsGrid">
+
+    <!-- ══════ GIFT 1 ══════ -->
+    <div class="gift-card" id="gift1" onclick="selectGift('gift1')">
+      <div class="gift-inner">
+        <div class="gift-front">
+          <div class="touch-ripple"></div>
+          <div class="front-img-box">
+            <img class="gift-front-img" src="G.jpg" alt="Gift 1"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="img-placeholder" style="display:none;">
+              <div class="img-placeholder-icon">🖼</div>
+              <div class="img-placeholder-txt">ADD FRONT IMAGE SRC</div>
+            </div>
+          </div>
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">GIFT BOX 1</div>
+          <div class="gift-tap-hint">👆 Tap to choose!</div>
+        </div>
+        <div class="gift-back">
+          <!-- back image fills the card fully -->
+          <div class="back-img-box">
+            <img class="gift-back-img" src="s2.png" alt="Gift 1 reveal"
+                 onerror="this.style.display='none';">
+          </div>
+          <div class="back-info">
+            <div class="gift-name">Horse Crystal Ball Night Lamp</div>
+            <div class="gift-hearts">💖 💖 💖</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ GIFT 2 ══════ -->
+    <div class="gift-card" id="gift2" onclick="selectGift('gift2')">
+      <div class="gift-inner">
+        <div class="gift-front">
+          <div class="touch-ripple" style="animation-delay:0.55s;"></div>
+          <div class="front-img-box">
+            <img class="gift-front-img" src="G.jpg" alt="Gift 2"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="img-placeholder" style="display:none;">
+              <div class="img-placeholder-icon">🖼</div>
+              <div class="img-placeholder-txt">ADD FRONT IMAGE SRC</div>
+            </div>
+          </div>
+          <div class="gift-icon">🎀</div>
+          <div class="gift-label">GIFT BOX 2</div>
+          <div class="gift-tap-hint">👆 Tap to choose!</div>
+        </div>
+        <div class="gift-back">
+          <div class="back-img-box">
+            <img class="gift-back-img" src="b.png" alt="Gift 2 reveal"
+                 onerror="this.style.display='none';">
+          </div>
+          <div class="back-info">
+            <div class="gift-name">Give Treat Biriyani 🍛</div>
+            <div class="gift-hearts">💛 💛 💛</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ GIFT 3 ══════ -->
+    <div class="gift-card" id="gift3" onclick="selectGift('gift3')">
+      <div class="gift-inner">
+        <div class="gift-front">
+          <div class="touch-ripple" style="animation-delay:1.1s;"></div>
+          <div class="front-img-box">
+            <img class="gift-front-img" src="G.jpg" alt="Gift 3"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="img-placeholder" style="display:none;">
+              <div class="img-placeholder-icon">🖼</div>
+              <div class="img-placeholder-txt">ADD FRONT IMAGE SRC</div>
+            </div>
+          </div>
+          <div class="gift-icon">🛍️</div>
+          <div class="gift-label">GIFT BOX 3</div>
+          <div class="gift-tap-hint">👆 Tap to choose!</div>
+        </div>
+        <div class="gift-back">
+          <div class="back-img-box">
+            <img class="gift-back-img" src="m.jpg" alt="Gift 3 reveal"
+                 onerror="this.style.display='none';">
+          </div>
+          <div class="back-info">
+            <div class="gift-name">Watch Movie With Me 🎬</div>
+            <div class="gift-hearts">💜 💜 💜</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end gifts-grid -->
+
+  <!-- Choose again -->
+  <button class="choose-again-btn" id="chooseAgainBtn" onclick="resetGifts()">
+    🎁 &nbsp; Choose Another Gift
+  </button>
+
+  <!-- FOOTER -->
+  <div class="gifts-footer">
+    <div class="footer-msg">With all the love in the world for you! 💖</div>
+    <a class="back-btn" href="home.html">🏠 &nbsp; Back to Home</a>
+  </div>
+
+</div>
+
+<script>
+// ── Floating hearts ──
+(function(){
+  const bg=document.getElementById('heartsBg');
+  const h=['💕','💖','✨','🌟','🌸','💫','🎀','💝'];
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');
+    el.className='h-heart';
+    el.textContent=h[Math.floor(Math.random()*h.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.fontSize=(0.8+Math.random()*1.4)+'rem';
+    el.style.animationDuration=(6+Math.random()*10)+'s';
+    el.style.animationDelay=(Math.random()*12)+'s';
+    bg.appendChild(el);
+  }
+})();
+
+const allIds = ['gift1','gift2','gift3'];
+let selectedGift = null;
+
+function selectGift(id) {
+  // If already opened/selected — do nothing on re-tap (flip is visual only)
+  if (selectedGift === id) return;
+  // If a different gift was already picked, ignore
+  if (selectedGift !== null) return;
+
+  selectedGift = id;
+
+  // 1. Hide the other two cards
+  allIds.forEach(gid => {
+    if (gid !== id) {
+      document.getElementById(gid).classList.add('hidden-card');
+    }
+  });
+
+  // 2. Expand the chosen card
+  const chosen = document.getElementById(id);
+  chosen.classList.add('chosen');
+
+  // 3. Flip it open after a tiny delay so expansion animates first
+  setTimeout(() => {
+    chosen.classList.add('opened');
+    spawnParticles(18);
+  }, 200);
+
+  // 4. Update hint and show choose-again
+  document.getElementById('hintText').textContent = '🎉 You chose! Here\'s your surprise!';
+  setTimeout(() => {
+    document.getElementById('chooseAgainBtn').style.display = 'inline-block';
+  }, 1200);
+}
+
+function resetGifts() {
+  selectedGift = null;
+  allIds.forEach(gid => {
+    const card = document.getElementById(gid);
+    card.classList.remove('hidden-card','chosen','opened');
+  });
+  document.getElementById('hintText').textContent = '👆 Tap / Click one gift box to reveal your surprise!';
+  document.getElementById('chooseAgainBtn').style.display = 'none';
+}
+
+function spawnParticles(n=15){
+  const em=['🎉','🎊','✨','💖','🌟','🎈','💕','🌸','🎀','💫'];
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.className='particle';
+      p.textContent=em[Math.floor(Math.random()*em.length)];
+      p.style.left=(Math.random()*90+5)+'vw';
+      p.style.top=(Math.random()*60+20)+'vh';
+      p.style.fontSize=(1+Math.random()*1.5)+'rem';
+      p.style.animationDuration=(2+Math.random()*2)+'s';
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),4000);
+    },i*75);
+  }
+}
+</script>
+</body>
+</html>

@@ -174,7 +174,7 @@ body {
            onkeydown="if(event.key==='Enter') checkPwd()">
     <button class="login-btn" onclick="checkPwd()">🎉 &nbsp; Unlock Surprise!</button>
     <div class="error-msg" id="errMsg">❌ Wrong password! &nbsp; Hint: two words 😉</div>
-    <div class="hint">Hint: <span>sidu moonji</span></div>
+    <div class="hint">Hint: <span>your nickname</span></div>
   </div>
 </div>
 
@@ -198,7 +198,7 @@ body {
 function checkPwd(){
   const val = document.getElementById('pwdInput').value.trim().toLowerCase();
   const err = document.getElementById('errMsg');
-  if(val==='sidu moonji'||val==='sidumoonji'){
+  if(val==='sidu moonji'||val==='sidumoonji' || val ==='benisha'){
     spawnParticles(18);
     setTimeout(()=>{ window.location.href='home.html'; }, 600);
   } else {

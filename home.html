@@ -44,6 +44,83 @@ body {
   100%{ transform:translateY(-110vh) rotate(360deg); opacity:0; }
 }
 
+/* ═══════════════════════════════════
+   FLOATING LETTER BUTTON (top)
+═══════════════════════════════════ */
+.float-letter-btn {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 26px;
+  background: rgba(10, 0, 30, 0.82);
+  border: 1.5px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 28px rgba(255, 215, 0, 0.2), 0 0 0 1px rgba(255,110,180,0.15);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  animation: floatBtn 3s ease-in-out infinite;
+}
+@keyframes floatBtn {
+  0%,100% { transform: translateX(-50%) translateY(0px);   box-shadow: 0 4px 28px rgba(255,215,0,0.2); }
+  50%      { transform: translateX(-50%) translateY(-6px);  box-shadow: 0 10px 40px rgba(255,215,0,0.35); }
+}
+.float-letter-btn:hover {
+  border-color: rgba(255,215,0,0.9);
+  box-shadow: 0 8px 48px rgba(255,215,0,0.5), 0 0 0 2px rgba(255,110,180,0.3);
+  animation-play-state: paused;
+}
+
+/* Envelope icon */
+.flb-envelope {
+  font-size: 1.4rem;
+  animation: envRock 2s ease-in-out infinite;
+}
+@keyframes envRock {
+  0%,100% { transform: rotate(-8deg); }
+  50%      { transform: rotate(8deg); }
+}
+
+/* Text part */
+.flb-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.flb-top {
+  font-family: 'Righteous', cursive;
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  color: #ffd700;
+}
+.flb-sub {
+  font-family: 'Comfortaa', cursive;
+  font-size: 0.62rem;
+  color: #c084fc;
+  letter-spacing: 1px;
+}
+
+/* Ping dot */
+.flb-ping {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #ff6eb4;
+  border: 2px solid #0d0020;
+  animation: pingPulse 1.5s infinite;
+}
+@keyframes pingPulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: 0.6; }
+}
+
 /* Music bar */
 .music-bar {
   position: fixed; bottom:18px; right:18px; z-index:999;
@@ -62,15 +139,13 @@ body {
 .music-toggle{ background:none; border:none; cursor:pointer; font-size:1.2rem; color:#ff6eb4; transition:transform 0.2s; }
 .music-toggle:hover{ transform:scale(1.2); }
 
-/* Shared page layout */
-.page{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px 20px; }
+/* Page layout */
+.page{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 20px 30px; }
 
-/* ===== HERO SECTION ===== */
+/* ===== HERO ===== */
 .hero { text-align:center; max-width:750px; padding-bottom: 40px; border-bottom: 1.5px solid rgba(255,110,180,0.15); width:100%; }
-
 .confetti-row{ font-size:2.8rem; margin-bottom:18px; animation:bounce 1.2s infinite alternate; }
 @keyframes bounce{ from{transform:translateY(0);} to{transform:translateY(-14px);} }
-
 .hero-title {
   font-family:'Lobster', cursive;
   font-size: clamp(3rem, 10vw, 6rem);
@@ -83,31 +158,25 @@ body {
   from{ filter:drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
   to  { filter:drop-shadow(0 0 35px rgba(255,110,180,0.9)); }
 }
-
 .hero-name {
   font-family:'Great Vibes', cursive;
   font-size: clamp(2.4rem, 6vw, 4rem);
-  color: #ffd700;
-  margin-bottom:10px;
+  color: #ffd700; margin-bottom:10px;
   text-shadow: 0 0 20px rgba(255,215,0,0.4);
 }
-
 .hero-date {
   font-family:'Orbitron', sans-serif;
   font-size: 0.95rem; letter-spacing:4px;
   color: #c084fc; margin-bottom:22px;
 }
-
 .hero-msg {
   font-family:'Comfortaa', cursive;
   color:#d4a0ff; font-size:1rem; line-height:1.9;
   max-width:480px; margin:0 auto;
 }
 
-/* ===== CANDLE SECTION ===== */
-.candle-section {
-  text-align:center; width:100%; max-width:700px; padding: 50px 0 20px;
-}
+/* ===== CANDLE ===== */
+.candle-section { text-align:center; width:100%; max-width:700px; padding: 50px 0 20px; }
 .section-title {
   font-family:'Great Vibes', cursive;
   font-size: clamp(2rem, 5vw, 3rem);
@@ -115,11 +184,7 @@ body {
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   margin-bottom:6px;
 }
-.section-sub {
-  font-family:'Comfortaa', cursive;
-  color:#9060b0; font-size:0.9rem; margin-bottom:28px;
-}
-
+.section-sub { font-family:'Comfortaa', cursive; color:#9060b0; font-size:0.9rem; margin-bottom:28px; }
 .cake-svg { width:min(280px,75vw); filter:drop-shadow(0 10px 40px rgba(255,110,180,0.45)); }
 .flame-group{ transform-origin:149px 60px; }
 .flame{ animation:flicker 0.15s infinite alternate; transform-origin:149px 80px; }
@@ -132,7 +197,6 @@ body {
 }
 .flame-glow{ animation:glowPulse 0.5s infinite alternate; }
 @keyframes glowPulse{ from{opacity:0.5;} to{opacity:1;} }
-
 .blow-btn {
   display:inline-flex; align-items:center; gap:10px;
   padding:16px 44px;
@@ -144,11 +208,7 @@ body {
   box-shadow:0 0 30px rgba(255,110,180,0.4);
 }
 .blow-btn:hover{ transform:translateY(-4px) scale(1.04); box-shadow:0 18px 45px rgba(255,110,180,0.6); }
-
-.blown-msg {
-  display:none; flex-direction:column; align-items:center;
-  animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1);
-}
+.blown-msg { display:none; flex-direction:column; align-items:center; animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1); }
 @keyframes popIn{ from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
 .blown-emoji{ font-size:5rem; margin-bottom:14px; }
 .blown-text {
@@ -159,54 +219,30 @@ body {
 }
 
 /* Divider */
-.divider {
-  width:100%; max-width:700px;
-  border:none; border-top:1.5px solid rgba(255,110,180,0.2);
-  margin:50px 0 40px;
-}
+.divider { width:100%; max-width:700px; border:none; border-top:1.5px solid rgba(255,110,180,0.2); margin:50px 0 40px; }
 
-/* ===== GIFT TEASER SECTION ===== */
-.gift-teaser {
-  text-align:center; max-width:700px; width:100%;
-  padding-bottom: 60px;
-}
-.gift-teaser-title {
-  font-family:'Lobster', cursive;
-  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-  color:#ffd700; letter-spacing:2px; margin-bottom:10px;
-}
-.gift-teaser-sub {
-  font-family:'Comfortaa', cursive;
-  color:#d4a0ff; font-size:0.95rem; margin-bottom:30px; line-height:1.8;
-}
-
-.gift-boxes-row {
-  display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:30px;
-}
+/* ===== GIFT TEASER ===== */
+.gift-teaser { text-align:center; max-width:700px; width:100%; padding-bottom: 60px; }
+.gift-teaser-title { font-family:'Lobster', cursive; font-size: clamp(1.8rem, 4.5vw, 2.8rem); color:#ffd700; letter-spacing:2px; margin-bottom:10px; }
+.gift-teaser-sub { font-family:'Comfortaa', cursive; color:#d4a0ff; font-size:0.95rem; margin-bottom:30px; line-height:1.8; }
+.gift-boxes-row { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:30px; }
 .teaser-box {
   width:80px; height:80px;
   background:linear-gradient(135deg,#1a0035,#2d005a);
-  border:2px solid rgba(255,215,0,0.4);
-  border-radius:18px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:2.2rem;
+  border:2px solid rgba(255,215,0,0.4); border-radius:18px;
+  display:flex; align-items:center; justify-content:center; font-size:2.2rem;
   animation:teaserFloat 2s ease-in-out infinite;
   box-shadow:0 0 20px rgba(192,132,252,0.2);
   transition:transform 0.2s,box-shadow 0.2s;
 }
 .teaser-box:nth-child(2){ animation-delay:0.4s; }
 .teaser-box:nth-child(3){ animation-delay:0.8s; }
-@keyframes teaserFloat{
-  0%,100%{ transform:translateY(0) rotate(-3deg); }
-  50%    { transform:translateY(-10px) rotate(3deg); }
-}
+@keyframes teaserFloat{ 0%,100%{ transform:translateY(0) rotate(-3deg); } 50%{ transform:translateY(-10px) rotate(3deg); } }
 .teaser-box:hover{ transform:scale(1.15); box-shadow:0 0 40px rgba(255,110,180,0.5); }
-
 .go-gifts-btn {
   display:inline-block; padding:17px 52px;
   background:linear-gradient(135deg,#ffd700,#ffb300);
-  border:none; border-radius:50px;
-  color:#0d0020;
+  border:none; border-radius:50px; color:#0d0020;
   font-family:'Righteous',cursive; font-size:1.1rem; letter-spacing:2px;
   cursor:pointer; text-decoration:none;
   transition:transform 0.2s, box-shadow 0.2s;
@@ -215,20 +251,26 @@ body {
 .go-gifts-btn:hover{ transform:translateY(-4px); box-shadow:0 16px 40px rgba(255,215,0,0.5); }
 
 /* Particles */
-.particle{
-  position:fixed; pointer-events:none; z-index:999;
-  animation:float-up 3s ease-in forwards;
-}
-@keyframes float-up{
-  0%  { opacity:1; transform:translateY(0) rotate(0deg); }
-  100%{ opacity:0; transform:translateY(-100vh) rotate(720deg); }
-}
+.particle{ position:fixed; pointer-events:none; z-index:999; animation:float-up 3s ease-in forwards; }
+@keyframes float-up{ 0%{ opacity:1; transform:translateY(0) rotate(0deg); } 100%{ opacity:0; transform:translateY(-100vh) rotate(720deg); } }
 </style>
 </head>
 <body>
 
 <div class="stars"></div>
 <div class="hearts-bg" id="heartsBg"></div>
+
+<!-- ═══════════════════════════════════
+     FLOATING LETTER BUTTON
+═══════════════════════════════════ -->
+<a class="float-letter-btn" href="letter.html">
+  <div class="flb-ping"></div>
+  <span class="flb-envelope">💌</span>
+  <div class="flb-text">
+    <span class="flb-top">A LETTER FOR YOU</span>
+    <span class="flb-sub">tap to open &nbsp; ✨</span>
+  </div>
+</a>
 
 <!-- Music bar -->
 <div class="music-bar" id="musicBar">
@@ -237,16 +279,12 @@ body {
   <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">⏸</button>
 </div>
 <audio id="bgMusic" loop>
-  <!--
-    🎵 REPLACE src WITH YOUR SONG URL OR FILE PATH:
-    Example: <source src="happy_birthday.mp3" type="audio/mpeg">
-  -->
   <source src="eppadi.mp3" type="audio/mpeg">
 </audio>
 
 <div class="page">
 
-  <!-- ===== HERO ===== -->
+  <!-- HERO -->
   <div class="hero">
     <div class="confetti-row">🎊 🎉 🎊</div>
     <div class="hero-title">Happy Birthday!</div>
@@ -258,7 +296,7 @@ body {
     </p>
   </div>
 
-  <!-- ===== CANDLE ===== -->
+  <!-- CANDLE -->
   <div class="candle-section">
     <div class="section-title">🕯️ Make a Wish!</div>
     <div class="section-sub">Blow out the candle — your wish will come true!</div>
@@ -302,7 +340,7 @@ body {
 
   <hr class="divider">
 
-  <!-- ===== GIFT TEASER ===== -->
+  <!-- GIFT TEASER -->
   <div class="gift-teaser">
     <div class="gift-boxes-row">
       <div class="teaser-box">🎁</div>
@@ -317,10 +355,9 @@ body {
     <a class="go-gifts-btn" href="gifts.html">🎁 &nbsp; Open Your Gifts!</a>
   </div>
 
-</div><!-- end .page -->
+</div>
 
 <script>
-// Hearts
 (function(){
   const bg=document.getElementById('heartsBg');
   const h=['💕','💖','✨','🌟','🌸','💫','🎀','💝'];
@@ -336,9 +373,7 @@ body {
   }
 })();
 
-// Music autoplay
 const audio=document.getElementById('bgMusic');
-const bar=document.getElementById('musicBar');
 const toggle=document.getElementById('musicToggle');
 window.addEventListener('load',()=>{
   audio.volume=0.45;
@@ -346,10 +381,9 @@ window.addEventListener('load',()=>{
 });
 function toggleMusic(){
   if(audio.paused){ audio.play(); toggle.textContent='⏸'; }
-  else            { audio.pause(); toggle.textContent='▶'; }
+  else { audio.pause(); toggle.textContent='▶'; }
 }
 
-// Candle
 let blown=false;
 function blowCandle(){
   if(blown) return; blown=true;

@@ -3,341 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔐 Birthday Login</title>
+<title>🔐 Birthday Surprise</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Comfortaa:wght@400;600;700&family=Righteous&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: 'Comfortaa', cursive;
-  min-height: 100vh;
-  background: #0d0020;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Comfortaa',cursive;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ffe0f0 0%,#ffd6ee 30%,#fff0f8 60%,#fce4f4 100%);
+  color:#7d3460;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
 }
 
-/* ── STARS ── */
-.stars {
-  position: fixed; inset: 0; z-index: 0;
-  background: radial-gradient(ellipse at 30% 40%, #1e0045 0%, #0d0020 70%);
+/* ── SOFT BLOBS ── */
+.blob{
+  position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:blobMove 14s ease-in-out infinite;
 }
-.stars::before, .stars::after {
-  content: ''; position: absolute; width: 2px; height: 2px; border-radius: 50%;
-  box-shadow:
-    60px 90px #fff, 130px 210px #ffd700, 260px 60px #fff, 330px 310px #ff6eb4,
-    460px 160px #fff, 560px 410px #fff, 690px 90px #c084fc, 790px 260px #fff,
-    910px 360px #ffd700, 1110px 110px #fff, 1210px 460px #ff6eb4,
-    80px 460px #fff, 210px 510px #ffd700, 360px 430px #fff, 610px 510px #c084fc,
-    760px 490px #fff, 960px 530px #ffd700, 1060px 410px #fff;
-  animation: twinkle 3s infinite alternate;
-}
-.stars::after {
-  box-shadow:
-    40px 160px #fff, 160px 310px #ffd700, 290px 190px #ff6eb4, 410px 90px #fff,
-    530px 290px #c084fc, 650px 360px #fff, 830px 160px #ffd700, 1010px 290px #fff,
-    1160px 360px #ff6eb4, 1260px 90px #fff, 110px 380px #fff, 310px 610px #c084fc;
-  animation-delay: 1.5s;
-}
-@keyframes twinkle { from{opacity:0.3;} to{opacity:1;} }
+.blob1{width:420px;height:420px;background:rgba(255,182,220,0.45);top:-80px;left:-100px;animation-delay:0s;}
+.blob2{width:320px;height:320px;background:rgba(255,200,230,0.4);bottom:-60px;right:-80px;animation-delay:4s;}
+.blob3{width:260px;height:260px;background:rgba(252,230,250,0.5);top:40%;left:60%;animation-delay:8s;}
+@keyframes blobMove{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.05);}66%{transform:translate(-20px,25px) scale(0.97);}
 
-/* ── HEARTS ── */
-.hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.h-heart { position: absolute; bottom: -50px; animation: riseHeart linear infinite; opacity: 0.12; }
-@keyframes riseHeart {
-  0%  { transform: translateY(0) rotate(0deg); opacity: 0.12; }
-  100%{ transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
 
-/* ══════════════════════════════════════════
-   COUNTDOWN SCREEN
-══════════════════════════════════════════ */
-#countdownScreen {
-  position: relative; z-index: 10;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  width: 100%; padding: 24px 20px;
-  text-align: center;
+/* ── FLOATING CONFETTI ── */
+.confetti-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.conf{position:absolute;bottom:-30px;animation:riseConf linear infinite;border-radius:50%;}
+@keyframes riseConf{0%{transform:translateY(0) rotate(0deg);opacity:0.8;}100%{transform:translateY(-110vh) rotate(720deg);opacity:0;}}
+
+/* ── MAIN CARD ── */
+#countdownScreen,#loginScreen{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;
+  width:100%;padding:32px 20px;text-align:center;
+}
+#loginScreen{display:none;}
+#loginScreen.revealed{display:flex;animation:revealIn 1s ease forwards;}
+@keyframes revealIn{from{opacity:0;transform:scale(0.8) translateY(30px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+.cd-emoji{font-size:70px;animation:floatBounce 3s ease-in-out infinite;margin-bottom:16px;}
+@keyframes floatBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-16px);}}
+
+.cd-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.4rem,7vw,4.2rem);
+  background:linear-gradient(135deg,#e91e8c,#ff6eb4,#c084fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:6px;
+}
+.cd-sub{color:#c084d8;font-size:0.9rem;margin-bottom:8px;letter-spacing:1px;}
+.cd-date-badge{
+  display:inline-block;padding:8px 26px;
+  border:2px solid rgba(233,30,140,0.35);border-radius:40px;
+  font-family:'Orbitron',sans-serif;font-size:0.78rem;
+  color:#e91e8c;letter-spacing:3px;margin-bottom:34px;
+  background:rgba(255,255,255,0.55);backdrop-filter:blur(8px);
+  box-shadow:0 4px 20px rgba(233,30,140,0.12);
 }
 
-.cd-lock {
-  font-size: 80px;
-  animation: floatLock 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 22px rgba(255,110,180,0.7));
-  margin-bottom: 18px;
+.cd-boxes{display:flex;gap:clamp(8px,3vw,20px);justify-content:center;flex-wrap:wrap;margin-bottom:32px;}
+.cd-box{
+  display:flex;flex-direction:column;align-items:center;
+  background:rgba(255,255,255,0.65);backdrop-filter:blur(12px);
+  border:2px solid rgba(255,110,180,0.3);border-radius:20px;
+  padding:clamp(12px,3vw,20px) clamp(14px,4vw,26px);
+  min-width:clamp(72px,18vw,96px);
+  box-shadow:0 8px 30px rgba(255,110,180,0.1);
 }
-@keyframes floatLock {
-  0%,100%{ transform: translateY(0) rotate(-4deg); }
-  50%    { transform: translateY(-14px) rotate(4deg); }
+.cd-num{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.8rem,7vw,3rem);font-weight:700;
+  background:linear-gradient(135deg,#e91e8c,#c084fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
 }
+.cd-unit{font-size:0.65rem;color:#c084d8;letter-spacing:2.5px;margin-top:5px;text-transform:uppercase;}
+.cd-colon{font-family:'Orbitron',sans-serif;font-size:2.2rem;color:rgba(233,30,140,0.4);align-self:center;padding-bottom:14px;animation:colonBlink 1s step-end infinite;}
+@keyframes colonBlink{0%,100%{opacity:1;}50%{opacity:0.2;}}
 
-.cd-title {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(2.4rem, 7vw, 4.2rem);
-  background: linear-gradient(135deg, #ff6eb4, #ffd700, #c084fc);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
+.cd-progress-wrap{width:min(380px,85vw);background:rgba(255,110,180,0.1);border-radius:40px;height:7px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(255,110,180,0.2);}
+.cd-progress-bar{height:100%;background:linear-gradient(90deg,#e91e8c,#ff6eb4,#c084fc);border-radius:40px;transition:width 1s linear;box-shadow:0 0 10px rgba(233,30,140,0.4);}
+.cd-footer{color:#d4a0c8;font-size:0.78rem;letter-spacing:1px;}
+.cd-footer span{color:#e91e8c;}
 
-.cd-subtitle {
-  font-family: 'Comfortaa', cursive;
-  color: #c084fc; font-size: 0.9rem;
-  margin-bottom: 10px; letter-spacing: 1px;
-}
+/* LOGIN */
+.lock-anim{font-size:80px;animation:floatBounce 3s ease-in-out infinite;margin-bottom:14px;}
+.login-title{font-family:'Great Vibes',cursive;font-size:clamp(2.4rem,8vw,4.5rem);background:linear-gradient(135deg,#e91e8c,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;}
+.login-sub{color:#c084d8;font-size:0.9rem;margin-bottom:30px;letter-spacing:1px;}
 
-.cd-date-badge {
-  display: inline-block;
-  padding: 8px 24px;
-  border: 1.5px solid rgba(255,215,0,0.5);
-  border-radius: 40px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.8rem;
-  color: #ffd700;
-  letter-spacing: 3px;
-  margin-bottom: 36px;
-  background: rgba(255,215,0,0.06);
-  box-shadow: 0 0 20px rgba(255,215,0,0.15);
+.card{
+  background:rgba(255,255,255,0.72);backdrop-filter:blur(16px);
+  border:2px solid rgba(255,110,180,0.3);border-radius:28px;
+  padding:38px 42px;width:min(420px,92vw);text-align:center;
+  box-shadow:0 20px 60px rgba(233,30,140,0.12),0 4px 20px rgba(192,132,252,0.1);
 }
+.input-label{font-family:'Righteous',cursive;font-size:0.82rem;letter-spacing:2px;color:#c084d8;margin-bottom:10px;text-align:left;display:block;}
+.pwd-input{
+  width:100%;padding:15px 20px;
+  background:rgba(255,255,255,0.8);
+  border:2px solid rgba(192,132,252,0.35);border-radius:16px;
+  color:#7d3460;font-family:'Comfortaa',cursive;font-size:1.05rem;
+  text-align:center;outline:none;letter-spacing:4px;
+  transition:border-color 0.3s,box-shadow 0.3s;margin-bottom:18px;
+}
+.pwd-input:focus{border-color:#e91e8c;box-shadow:0 0 22px rgba(233,30,140,0.22);}
+.pwd-input::placeholder{letter-spacing:1px;color:#d4aac0;font-size:0.9rem;}
+.login-btn{
+  width:100%;padding:16px;
+  background:linear-gradient(135deg,#e91e8c,#c084fc);
+  border:none;border-radius:16px;color:#fff;
+  font-family:'Righteous',cursive;font-size:1.1rem;letter-spacing:2px;
+  cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;
+  box-shadow:0 6px 28px rgba(233,30,140,0.35);
+}
+.login-btn:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(233,30,140,0.5);}
+.error-msg{color:#e91e8c;font-size:0.88rem;margin-top:12px;display:none;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.hint{color:#d4aac0;font-size:0.76rem;margin-top:12px;}
+.hint span{color:#c084d8;}
 
-/* Countdown boxes */
-.cd-boxes {
-  display: flex;
-  gap: clamp(10px, 3vw, 22px);
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 36px;
-}
+/* MUSIC BAR */
+.music-bar{position:fixed;bottom:18px;right:18px;z-index:999;background:rgba(255,255,255,0.75);backdrop-filter:blur(12px);border:2px solid rgba(255,110,180,0.35);border-radius:50px;padding:9px 16px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 24px rgba(233,30,140,0.15);}
+.music-note{font-size:1.2rem;animation:noteRock 1.5s ease-in-out infinite;}
+@keyframes noteRock{0%,100%{transform:rotate(-10deg);}50%{transform:rotate(10deg);}}
+.music-label{font-size:0.72rem;color:#c084d8;}
+.music-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#e91e8c;}
 
-.cd-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(255,255,255,0.06);
-  border: 1.5px solid rgba(192,132,252,0.4);
-  border-radius: 20px;
-  padding: clamp(14px,3vw,22px) clamp(16px,4vw,28px);
-  min-width: clamp(72px, 18vw, 96px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 30px rgba(192,132,252,0.1), inset 0 1px 0 rgba(255,255,255,0.08);
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.4s, box-shadow 0.4s;
-}
-.cd-box::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,110,180,0.07), rgba(192,132,252,0.07));
-  pointer-events: none;
-}
-.cd-box.pulse {
-  border-color: rgba(255,110,180,0.8);
-  box-shadow: 0 0 24px rgba(255,110,180,0.4);
-  animation: boxPulse 0.4s ease;
-}
-@keyframes boxPulse {
-  0%,100%{ transform: scale(1); }
-  50%    { transform: scale(1.05); }
-}
-
-.cd-num {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2rem, 7vw, 3.4rem);
-  font-weight: 700;
-  background: linear-gradient(135deg, #ffd700, #ff6eb4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  line-height: 1;
-  transition: transform 0.2s;
-}
-.cd-num.flip {
-  animation: numFlip 0.35s ease;
-}
-@keyframes numFlip {
-  0%  { transform: translateY(-8px); opacity: 0.5; }
-  100%{ transform: translateY(0);    opacity: 1; }
-}
-
-.cd-unit {
-  font-family: 'Comfortaa', cursive;
-  font-size: clamp(0.6rem, 2vw, 0.75rem);
-  color: #c084fc;
-  letter-spacing: 2.5px;
-  margin-top: 6px;
-  text-transform: uppercase;
-}
-
-/* Colon separator */
-.cd-colon {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-  color: rgba(255,110,180,0.6);
-  align-self: center;
-  padding-bottom: 16px;
-  animation: colonBlink 1s step-end infinite;
-}
-@keyframes colonBlink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
-
-/* Progress bar */
-.cd-progress-wrap {
-  width: min(420px, 88vw);
-  background: rgba(255,255,255,0.08);
-  border-radius: 40px;
-  height: 6px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  border: 1px solid rgba(255,110,180,0.2);
-}
-.cd-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #ff6eb4, #ffd700, #c084fc);
-  border-radius: 40px;
-  transition: width 1s linear;
-  box-shadow: 0 0 10px rgba(255,110,180,0.5);
-}
-
-.cd-footer {
-  font-family: 'Comfortaa', cursive;
-  color: #7040a0; font-size: 0.78rem;
-  letter-spacing: 1px;
-}
-.cd-footer span { color: #ff6eb4; }
-
-/* ══════════════════════════════════════════
-   LOGIN SCREEN (hidden until birthday)
-══════════════════════════════════════════ */
-#loginScreen {
-  position: relative; z-index: 10;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  width: 100%; padding: 20px;
-}
-
-/* Reveal animation */
-#loginScreen.revealed {
-  display: flex;
-  animation: revealIn 1.2s cubic-bezier(0.34,1.56,0.64,1) forwards;
-}
-@keyframes revealIn {
-  0%  { opacity:0; transform: scale(0.6) translateY(40px); }
-  100%{ opacity:1; transform: scale(1) translateY(0); }
-}
-
-.lock-anim {
-  font-size: 90px;
-  animation: floatLock 3s ease-in-out infinite;
-  margin-bottom: 18px;
-  filter: drop-shadow(0 0 20px rgba(255,110,180,0.6));
-}
-
-.login-title {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(2.8rem, 8vw, 5rem);
-  background: linear-gradient(135deg, #ff6eb4, #ffd700, #c084fc);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-align: center; margin-bottom: 6px;
-}
-
-.login-sub {
-  font-family: 'Comfortaa', cursive;
-  color: #c084fc; font-size: 0.95rem;
-  margin-bottom: 38px; text-align: center; letter-spacing: 1px;
-}
-
-.card {
-  background: rgba(255,255,255,0.06);
-  border: 1.5px solid rgba(255,110,180,0.35);
-  border-radius: 28px;
-  padding: 44px 48px;
-  width: min(440px, 93vw);
-  text-align: center;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 0 80px rgba(192,132,252,0.15), 0 0 30px rgba(255,110,180,0.1);
-}
-
-.input-label {
-  font-family: 'Righteous', cursive;
-  font-size: 0.85rem; letter-spacing: 2px;
-  color: #c084fc; margin-bottom: 10px;
-  text-align: left; display: block;
-}
-
-.pwd-input {
-  width: 100%;
-  padding: 16px 22px;
-  background: rgba(255,255,255,0.07);
-  border: 2px solid rgba(192,132,252,0.35);
-  border-radius: 16px;
-  color: #fff;
-  font-family: 'Comfortaa', cursive;
-  font-size: 1.1rem; text-align: center;
-  outline: none; letter-spacing: 4px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  margin-bottom: 20px;
-}
-.pwd-input:focus {
-  border-color: #ff6eb4;
-  box-shadow: 0 0 24px rgba(255,110,180,0.35);
-}
-.pwd-input::placeholder { letter-spacing: 1px; color: #7040a0; font-size: 0.95rem; }
-
-.login-btn {
-  width: 100%; padding: 17px;
-  background: linear-gradient(135deg, #ff6eb4, #c084fc);
-  border: none; border-radius: 16px;
-  color: #fff;
-  font-family: 'Righteous', cursive;
-  font-size: 1.15rem; letter-spacing: 2px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 6px 30px rgba(255,110,180,0.35);
-}
-.login-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(255,110,180,0.55); }
-
-.error-msg {
-  font-family: 'Comfortaa', cursive;
-  color: #ff6060; font-size: 0.88rem;
-  margin-top: 14px; display: none;
-}
-@keyframes shake {
-  0%,100%{transform:translateX(0);} 25%{transform:translateX(-9px);} 75%{transform:translateX(9px);}
-}
-.hint { color: #7040a0; font-size: 0.78rem; margin-top: 14px; }
-.hint span { color: #c084fc; }
-
-/* ── MUSIC BAR ── */
-.music-bar {
-  position: fixed; bottom:18px; right:18px; z-index:999;
-  background: rgba(15,0,35,0.88);
-  border: 1.5px solid rgba(255,110,180,0.4);
-  border-radius: 50px; padding:10px 18px;
-  display: flex; align-items:center; gap:10px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 30px rgba(255,110,180,0.2);
-}
-.music-note{ font-size:1.3rem; animation:noteRock 1.5s ease-in-out infinite; }
-@keyframes noteRock{ 0%,100%{transform:rotate(-10deg);} 50%{transform:rotate(10deg);} }
-.music-label{ font-family:'Comfortaa',cursive; font-size:0.75rem; color:#d4a0ff; }
-.music-toggle{ background:none; border:none; cursor:pointer; font-size:1.2rem; color:#ff6eb4; }
-.music-toggle:hover{ transform:scale(1.2); }
-
-/* ── PARTICLE ── */
-.particle {
-  position: fixed; pointer-events: none; z-index: 999;
-  animation: float-up 3s ease-in forwards;
-}
-@keyframes float-up {
-  0%  { opacity:1; transform:translateY(0) rotate(0deg); }
-  100%{ opacity:0; transform:translateY(-100vh) rotate(720deg); }
-}
+.particle{position:fixed;pointer-events:none;z-index:999;animation:float-up 3s forwards;}
+@keyframes float-up{0%{opacity:1;transform:translateY(0) rotate(0deg);}100%{opacity:0;transform:translateY(-100vh) rotate(720deg);}}
 </style>
 </head>
 <body>
 
-<div class="stars"></div>
-<div class="hearts-bg" id="heartsBg"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+<div class="confetti-bg" id="confettiBg"></div>
 
-<!-- MUSIC BAR -->
 <div class="music-bar">
   <span class="music-note">🎵</span>
   <span class="music-label">Birthday Song ♪</span>
@@ -347,53 +150,35 @@ body {
   <source src="en.mp3" type="audio/mpeg">
 </audio>
 
-<!-- ══ COUNTDOWN SCREEN ══ -->
+<!-- COUNTDOWN SCREEN -->
 <div id="countdownScreen">
-  <div class="cd-lock">🎂</div>
+  <div class="cd-emoji">🎂</div>
   <div class="cd-title">Something Special is Coming!</div>
-  <div class="cd-subtitle">✨ A magical surprise awaits you ✨</div>
+  <div class="cd-sub">✨ A magical surprise awaits you ✨</div>
   <div class="cd-date-badge">MAY 31 · 2026 · 12:00 AM IST</div>
 
   <div class="cd-boxes">
-    <div class="cd-box" id="box-d">
-      <div class="cd-num" id="cd-days">00</div>
-      <div class="cd-unit">Days</div>
-    </div>
+    <div class="cd-box"><div class="cd-num" id="cd-days">00</div><div class="cd-unit">Days</div></div>
     <div class="cd-colon">:</div>
-    <div class="cd-box" id="box-h">
-      <div class="cd-num" id="cd-hours">00</div>
-      <div class="cd-unit">Hours</div>
-    </div>
+    <div class="cd-box"><div class="cd-num" id="cd-hours">00</div><div class="cd-unit">Hours</div></div>
     <div class="cd-colon">:</div>
-    <div class="cd-box" id="box-m">
-      <div class="cd-num" id="cd-mins">00</div>
-      <div class="cd-unit">Mins</div>
-    </div>
+    <div class="cd-box"><div class="cd-num" id="cd-mins">00</div><div class="cd-unit">Mins</div></div>
     <div class="cd-colon">:</div>
-    <div class="cd-box" id="box-s">
-      <div class="cd-num" id="cd-secs">00</div>
-      <div class="cd-unit">Secs</div>
-    </div>
+    <div class="cd-box"><div class="cd-num" id="cd-secs">00</div><div class="cd-unit">Secs</div></div>
   </div>
 
-  <div class="cd-progress-wrap">
-    <div class="cd-progress-bar" id="cdProgressBar" style="width:0%"></div>
-  </div>
-
+  <div class="cd-progress-wrap"><div class="cd-progress-bar" id="cdProgressBar" style="width:0%"></div></div>
   <div class="cd-footer">Unlocks on <span>Beniksha's Birthday 🌸</span> — Stay close!</div>
 </div>
 
-<!-- ══ LOGIN SCREEN (hidden until birthday) ══ -->
+<!-- LOGIN SCREEN -->
 <div id="loginScreen">
   <div class="lock-anim">🔐</div>
   <div class="login-title">Secret Birthday Surprise!</div>
   <div class="login-sub">✨ Enter the magic password to unlock ✨</div>
-
   <div class="card">
     <label class="input-label">PASSWORD</label>
-    <input class="pwd-input" id="pwdInput" type="password"
-           placeholder="Enter password here..."
-           onkeydown="if(event.key==='Enter') checkPwd()">
+    <input class="pwd-input" id="pwdInput" type="password" placeholder="Enter password here..." onkeydown="if(event.key==='Enter') checkPwd()">
     <button class="login-btn" onclick="checkPwd()">🎉 &nbsp; Unlock Surprise!</button>
     <div class="error-msg" id="errMsg">❌ Wrong password! &nbsp; Hint: two words 😉</div>
     <div class="hint">Hint: <span>your nickname</span></div>
@@ -401,163 +186,96 @@ body {
 </div>
 
 <script>
-/* ── Floating hearts ── */
+// Floating confetti
 (function(){
-  const bg = document.getElementById('heartsBg');
-  const h = ['💕','💖','✨','🌟','🌸','💫','🎀','💝'];
-  for(let i = 0; i < 22; i++){
-    const el = document.createElement('div');
-    el.className = 'h-heart';
-    el.textContent = h[Math.floor(Math.random()*h.length)];
-    el.style.left = Math.random()*100+'vw';
-    el.style.fontSize = (0.9+Math.random()*1.4)+'rem';
-    el.style.animationDuration = (6+Math.random()*10)+'s';
-    el.style.animationDelay = (Math.random()*12)+'s';
+  const bg=document.getElementById('confettiBg');
+  const colors=['#ffb6d9','#ffd6ee','#f9a8d4','#c084fc','#ffd700','#ff80b5','#e879f9'];
+  for(let i=0;i<35;i++){
+    const el=document.createElement('div');
+    el.className='conf';
+    const size=(5+Math.random()*10)+'px';
+    el.style.width=size;el.style.height=size;
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(7+Math.random()*11)+'s';
+    el.style.animationDelay=(Math.random()*14)+'s';
+    el.style.borderRadius=Math.random()>0.5?'50%':'3px';
+    el.style.opacity=(0.4+Math.random()*0.5);
     bg.appendChild(el);
   }
 })();
 
-/* ── Music ── */
-const audio = document.getElementById('bgMusic');
-const toggleBtn = document.getElementById('musicToggle');
-let musicPlaying = false;
-window.addEventListener('load', () => {
-  audio.volume = 0.4;
-  audio.play().then(() => { musicPlaying = true; toggleBtn.textContent = '⏸'; })
-              .catch(() => { toggleBtn.textContent = '▶'; });
+// Music
+const audio=document.getElementById('bgMusic');
+const toggleBtn=document.getElementById('musicToggle');
+let musicPlaying=false;
+window.addEventListener('load',()=>{
+  audio.volume=0.4;
+  audio.play().then(()=>{musicPlaying=true;toggleBtn.textContent='⏸';}).catch(()=>{toggleBtn.textContent='▶';});
 });
-function toggleMusic() {
-  if (musicPlaying) {
-    audio.pause(); musicPlaying = false; toggleBtn.textContent = '▶';
-  } else {
-    audio.play().then(() => { musicPlaying = true; toggleBtn.textContent = '⏸'; });
-  }
+function toggleMusic(){
+  if(musicPlaying){audio.pause();musicPlaying=false;toggleBtn.textContent='▶';}
+  else{audio.play().then(()=>{musicPlaying=true;toggleBtn.textContent='⏸';});}
 }
 
-/* ══════════════════════════════════════════
-   BIRTHDAY UNLOCK TIMER
-   Target: May 31, 2026, 00:00:00 IST (UTC+5:30)
-   IST midnight = UTC 18:30:00 on May 30
-══════════════════════════════════════════ */
-// May 31 2026 00:00:00 IST = May 30 2026 18:30:00 UTC
-const BIRTHDAY_UTC = Date.UTC(2026, 4, 30, 18, 30, 0); // month is 0-indexed, 4=May
-
-// For progress bar: count from when the page was first visited back to 30 days before birthday
-const PROGRESS_START = BIRTHDAY_UTC - (30 * 24 * 60 * 60 * 1000);
-
-const cdDays  = document.getElementById('cd-days');
-const cdHours = document.getElementById('cd-hours');
-const cdMins  = document.getElementById('cd-mins');
-const cdSecs  = document.getElementById('cd-secs');
-const progressBar = document.getElementById('cdProgressBar');
-const countdownScreen = document.getElementById('countdownScreen');
-const loginScreen     = document.getElementById('loginScreen');
-
-// Track previous values to trigger flip animation
-let prev = { d: -1, h: -1, m: -1, s: -1 };
-
-function pad(n){ return String(n).padStart(2,'0'); }
-
-function animateBox(id, boxId) {
-  const el = document.getElementById(id);
-  const box = document.getElementById(boxId);
-  el.classList.remove('flip');
-  void el.offsetWidth;
-  el.classList.add('flip');
-  box.classList.remove('pulse');
-  void box.offsetWidth;
-  box.classList.add('pulse');
+// Countdown
+const BIRTHDAY_UTC=Date.UTC(2026,4,30,18,30,0);
+const PROGRESS_START=BIRTHDAY_UTC-(30*24*60*60*1000);
+const cdDays=document.getElementById('cd-days');
+const cdHours=document.getElementById('cd-hours');
+const cdMins=document.getElementById('cd-mins');
+const cdSecs=document.getElementById('cd-secs');
+const progressBar=document.getElementById('cdProgressBar');
+function pad(n){return String(n).padStart(2,'0');}
+function revealLogin(){
+  document.getElementById('countdownScreen').style.display='none';
+  document.getElementById('loginScreen').classList.add('revealed');
+  spawnParticles(25);
 }
-
-function revealLogin() {
-  countdownScreen.style.display = 'none';
-  loginScreen.classList.add('revealed');
-  spawnParticles(30);
+function tick(){
+  const now=Date.now();
+  const diff=BIRTHDAY_UTC-now;
+  if(diff<=0){revealLogin();return;}
+  const ts=Math.floor(diff/1000);
+  cdSecs.textContent=pad(ts%60);
+  cdMins.textContent=pad(Math.floor(ts/60)%60);
+  cdHours.textContent=pad(Math.floor(ts/3600)%24);
+  cdDays.textContent=pad(Math.floor(ts/86400));
+  const pct=Math.min(100,Math.max(0,((Date.now()-PROGRESS_START)/(BIRTHDAY_UTC-PROGRESS_START))*100));
+  progressBar.style.width=pct.toFixed(2)+'%';
+  setTimeout(tick,1000);
 }
-
-function tick() {
-  const now = Date.now();
-  const diff = BIRTHDAY_UTC - now;
-
-  // Already past birthday — show login immediately
-  if (diff <= 0) {
-    revealLogin();
-    return;
-  }
-
-  // Calculate time parts
-  const totalSecs = Math.floor(diff / 1000);
-  const s = totalSecs % 60;
-  const totalMins = Math.floor(totalSecs / 60);
-  const m = totalMins % 60;
-  const totalHours = Math.floor(totalMins / 60);
-  const h = totalHours % 24;
-  const d = Math.floor(totalHours / 24);
-
-  // Update with flip animation only when value changes
-  if (s !== prev.s) { cdSecs.textContent = pad(s); animateBox('cd-secs','box-s'); prev.s = s; }
-  if (m !== prev.m) { cdMins.textContent = pad(m); animateBox('cd-mins','box-m'); prev.m = m; }
-  if (h !== prev.h) { cdHours.textContent = pad(h); animateBox('cd-hours','box-h'); prev.h = h; }
-  if (d !== prev.d) { cdDays.textContent = pad(d); animateBox('cd-days','box-d'); prev.d = d; }
-
-  // Progress bar: 0% at PROGRESS_START → 100% at BIRTHDAY_UTC
-  const totalRange = BIRTHDAY_UTC - PROGRESS_START;
-  const elapsed = now - PROGRESS_START;
-  const pct = Math.min(100, Math.max(0, (elapsed / totalRange) * 100));
-  progressBar.style.width = pct.toFixed(2) + '%';
-
-  setTimeout(tick, 1000);
-}
-
-// Initial render (no flip) then start ticking
-(function initDisplay(){
-  const now = Date.now();
-  const diff = BIRTHDAY_UTC - now;
-  if (diff <= 0) { revealLogin(); return; }
-  const totalSecs = Math.floor(diff / 1000);
-  const s = totalSecs % 60;
-  const m = Math.floor(totalSecs/60) % 60;
-  const h = Math.floor(totalSecs/3600) % 24;
-  const d = Math.floor(totalSecs/86400);
-  cdDays.textContent  = pad(d);
-  cdHours.textContent = pad(h);
-  cdMins.textContent  = pad(m);
-  cdSecs.textContent  = pad(s);
-  prev = { d, h, m, s };
-  setTimeout(tick, 1000);
+(function(){
+  const now=Date.now();const diff=BIRTHDAY_UTC-now;
+  if(diff<=0){revealLogin();return;}
+  const ts=Math.floor(diff/1000);
+  cdSecs.textContent=pad(ts%60);cdMins.textContent=pad(Math.floor(ts/60)%60);
+  cdHours.textContent=pad(Math.floor(ts/3600)%24);cdDays.textContent=pad(Math.floor(ts/86400));
+  setTimeout(tick,1000);
 })();
 
-/* ── Password check ── */
 function checkPwd(){
-  const val = document.getElementById('pwdInput').value.trim().toLowerCase();
-  const err = document.getElementById('errMsg');
-  if(val === 'sidu moonji' || val === 'sidumoonji' || val === 'benisha' || val === 'beniksha' || val === 'muttacose'){
-    spawnParticles(18);
-    setTimeout(() => { window.location.href = 'home.html'; }, 700);
+  const val=document.getElementById('pwdInput').value.trim().toLowerCase();
+  const err=document.getElementById('errMsg');
+  if(['sidu moonji','sidumoonji','benisha','beniksha','muttacose'].includes(val)){
+    spawnParticles(20);
+    setTimeout(()=>{window.location.href='home.html';},700);
   } else {
-    err.style.display = 'block';
-    err.style.animation = 'none';
-    void err.offsetWidth;
-    err.style.animation = 'shake 0.4s';
-    document.getElementById('pwdInput').value = '';
+    err.style.display='block';err.style.animation='none';void err.offsetWidth;err.style.animation='shake 0.4s';
+    document.getElementById('pwdInput').value='';
   }
 }
-
-/* ── Particles ── */
-function spawnParticles(n = 15){
-  const em = ['🎉','🎊','✨','💖','🌟','🎈','💕','🌸','🎀','💫'];
-  for(let i = 0; i < n; i++){
-    setTimeout(() => {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.textContent = em[Math.floor(Math.random()*em.length)];
-      p.style.left   = (Math.random()*90+5)+'vw';
-      p.style.top    = (Math.random()*60+20)+'vh';
-      p.style.fontSize = (1+Math.random()*1.5)+'rem';
-      p.style.animationDuration = (2+Math.random()*2)+'s';
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 4000);
-    }, i*70);
+function spawnParticles(n){
+  const em=['🎉','🎊','✨','💖','🌸','💫','🎀','💝','🌟'];
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');p.className='particle';
+      p.textContent=em[Math.floor(Math.random()*em.length)];
+      p.style.left=(Math.random()*90+5)+'vw';p.style.top=(Math.random()*60+20)+'vh';
+      p.style.fontSize=(1+Math.random()*1.5)+'rem';
+      p.style.animationDuration=(2+Math.random()*2)+'s';
+      document.body.appendChild(p);setTimeout(()=>p.remove(),4000);
+    },i*70);
   }
 }
 </script>

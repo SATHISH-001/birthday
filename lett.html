@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 A Letter For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Comfortaa:wght@400;600;700&family=Righteous&family=Lobster&family=Cinzel:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;overflow-x:hidden;}
+body{
+  font-family:'Comfortaa',cursive;
+  background:linear-gradient(150deg,#ffe0f0 0%,#ffd6ee 30%,#fff5fb 60%,#fce4f4 100%);
+  min-height:100vh;color:#7d3460;
+}
+.blob{position:fixed;border-radius:50%;filter:blur(85px);pointer-events:none;z-index:0;animation:blobMove 16s ease-in-out infinite;}
+.blob1{width:450px;height:450px;background:rgba(255,182,220,0.4);top:-100px;left:-100px;}
+.blob2{width:350px;height:350px;background:rgba(252,230,250,0.4);bottom:-70px;right:-70px;animation-delay:5s;}
+.blob3{width:250px;height:250px;background:rgba(255,200,230,0.35);top:40%;left:55%;animation-delay:10s;}
+@keyframes blobMove{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(24px,-18px) scale(1.04);}66%{transform:translate(-16px,22px) scale(0.97);}}
+.confetti-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.conf{position:absolute;bottom:-20px;animation:confRise linear infinite;border-radius:3px;}
+@keyframes confRise{0%{transform:translateY(0) rotate(0deg);opacity:0.7;}100%{transform:translateY(-110vh) rotate(540deg);opacity:0;}}
+.music-bar{position:fixed;bottom:18px;right:18px;z-index:999;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border:2px solid rgba(255,110,180,0.3);border-radius:50px;padding:9px 16px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 24px rgba(233,30,140,0.15);}
+.music-note{font-size:1.2rem;animation:noteRock 1.5s ease-in-out infinite;}
+@keyframes noteRock{0%,100%{transform:rotate(-10deg);}50%{transform:rotate(10deg);}}
+.music-label{font-size:0.72rem;color:#c084d8;}
+.music-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#e91e8c;}
+
+/* PAGE */
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:44px 20px 80px;width:100%;}
+
+/* HEADER */
+.gifts-header{text-align:center;margin-bottom:30px;width:100%;}
+.header-emoji{font-size:3rem;animation:bounce 1.2s infinite alternate;display:block;margin-bottom:10px;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-13px);}}
+.gifts-title{font-family:'Lobster',cursive;font-size:clamp(2rem,6vw,3.5rem);background:linear-gradient(135deg,#e91e8c,#ff6eb4,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;margin-bottom:8px;animation:glow 2.5s infinite alternate;}
+@keyframes glow{from{filter:drop-shadow(0 0 8px rgba(233,30,140,0.3));}to{filter:drop-shadow(0 0 28px rgba(192,132,252,0.7));}}
+.gifts-sub{font-family:'Great Vibes',cursive;font-size:clamp(1.3rem,3.5vw,1.9rem);color:#c084d8;margin-bottom:6px;}
+.gifts-hint{color:#d4aac0;font-size:0.87rem;letter-spacing:1px;animation:hintPulse 2.2s infinite alternate;}
+@keyframes hintPulse{from{opacity:0.5;}to{opacity:1;}}
+
+/* ══════════════════════════════
+   SCROLL STAGE — the whole thing
+══════════════════════════════ */
+.scroll-stage{
+  width:min(520px,92vw);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  margin-bottom:32px;
+}
+
+/* ── WOODEN ROLLER ── */
+.roller{
+  width:calc(100% + 40px);
+  height:50px;
+  border-radius:25px;
+  position:relative;
+  z-index:10;
+  flex-shrink:0;
+  overflow:visible;
+}
+.roller-top{
+  background:linear-gradient(180deg,
+    #e8c060 0%, #c8860c 12%,
+    #7a4808 32%, #b86c18 48%,
+    #d49030 58%, #8a5010 72%,
+    #c07820 84%, #a06010 100%);
+  box-shadow:0 8px 22px rgba(0,0,0,0.5),0 2px 6px rgba(200,150,50,0.3),inset 0 2px 4px rgba(255,230,140,0.25);
+}
+.roller-bot{
+  background:linear-gradient(0deg,
+    #e8c060 0%, #c8860c 12%,
+    #7a4808 32%, #b86c18 48%,
+    #d49030 58%, #8a5010 72%,
+    #c07820 84%, #a06010 100%);
+  box-shadow:0 -8px 22px rgba(0,0,0,0.5),0 -2px 6px rgba(200,150,50,0.3),inset 0 -2px 4px rgba(255,230,140,0.25);
+}
+/* wood grain */
+.roller::after{
+  content:'';position:absolute;inset:0;border-radius:25px;
+  background:repeating-linear-gradient(90deg,transparent 0,transparent 22px,rgba(0,0,0,0.1) 22px,rgba(0,0,0,0.1) 24px,transparent 24px,transparent 46px,rgba(255,200,100,0.1) 46px,rgba(255,200,100,0.1) 48px);
+  pointer-events:none;
+}
+/* round end-caps */
+.roller::before{
+  content:'';position:absolute;top:50%;left:-4px;right:-4px;
+  height:56px;transform:translateY(-50%);
+  background:inherit;border-radius:28px;
+  z-index:-1;
+  box-shadow:0 0 0 3px rgba(160,100,10,0.5);
+}
+/* carved rings on caps */
+.roller-ring{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;
+  border:3px solid rgba(100,60,5,0.5);
+  box-shadow:inset 0 0 8px rgba(0,0,0,0.4),0 0 4px rgba(255,200,80,0.3);
+}
+.roller-ring.left{left:-8px;background:radial-gradient(circle at 35% 30%,#d49030,#7a4808);}
+.roller-ring.right{right:-8px;background:radial-gradient(circle at 35% 30%,#d49030,#7a4808);}
+
+/* ── THE SCROLL WRAPPER (clips parchment) ── */
+.scroll-wrap{
+  width:96%;
+  overflow:hidden;
+  /* height animates from 0 to full on open */
+  max-height:0;
+  transition:max-height 1.8s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+  z-index:5;
+}
+.scroll-wrap.opened{
+  max-height:2000px;
+}
+
+/* ── PARCHMENT ── */
+.parchment{
+  width:100%;
+  position:relative;
+  padding:36px 34px 40px;
+  /* rich aged paper */
+  background:
+    radial-gradient(ellipse 80% 40% at 25% 20%, rgba(210,160,60,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 75% 75%, rgba(190,130,40,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 30% at 50% 50%, rgba(220,180,80,0.12) 0%, transparent 60%),
+    linear-gradient(175deg,
+      #f8e8a8 0%, #f2d878 8%,
+      #faeea0 18%, #ecd070 30%,
+      #f6e890 42%, #ecd478 55%,
+      #f4e494 68%, #e8cc70 80%,
+      #f2e090 92%, #ead878 100%);
+  /* left & right border only — rollers are the top/bottom */
+  border-left:4px solid #a87020;
+  border-right:4px solid #a87020;
+  overflow:hidden;
+}
+
+/* lined paper texture */
+.parchment::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    transparent 0px, transparent 27px,
+    rgba(160,100,20,0.13) 28px
+  );
+}
+
+/* darkened / burnt vignette edges */
+.parchment::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 20px 100% at 0% 50%, rgba(80,40,0,0.4) 0%, transparent 100%),
+    radial-gradient(ellipse 20px 100% at 100% 50%, rgba(80,40,0,0.4) 0%, transparent 100%),
+    radial-gradient(ellipse 100% 12px at 50% 0%, rgba(60,30,0,0.3) 0%, transparent 100%),
+    radial-gradient(ellipse 100% 12px at 50% 100%, rgba(60,30,0,0.3) 0%, transparent 100%);
+}
+
+/* stains */
+.stain{position:absolute;border-radius:50%;pointer-events:none;}
+.s1{width:70px;height:50px;background:rgba(150,90,10,0.09);top:12%;left:6%;transform:rotate(-15deg);}
+.s2{width:50px;height:65px;background:rgba(130,75,5,0.07);bottom:22%;right:8%;transform:rotate(20deg);}
+.s3{width:35px;height:25px;background:rgba(170,110,30,0.07);top:52%;left:68%;}
+.s4{width:20px;height:30px;background:rgba(140,80,10,0.08);top:28%;right:18%;}
+
+/* crinkle lines */
+.crinkle{position:absolute;pointer-events:none;opacity:0.18;}
+.crinkle::after{content:'';position:absolute;background:rgba(120,70,10,0.5);}
+.ck1{top:35%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(120,70,10,0.2),rgba(120,70,10,0.4),rgba(120,70,10,0.2),transparent);transform:rotate(-0.4deg);}
+.ck2{top:65%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(100,60,5,0.15),rgba(100,60,5,0.35),rgba(100,60,5,0.15),transparent);transform:rotate(0.3deg);}
+
+/* ── SCROLL CONTENT ── */
+.sc{position:relative;z-index:2;text-align:center;}
+
+/* ornamental divider */
+.ornament{
+  font-family:'Cinzel',serif;
+  font-size:0.9rem;letter-spacing:12px;
+  color:#8a5800;margin-bottom:14px;opacity:0.75;
+}
+
+/* wax seal stamp at top */
+.wax-seal{
+  width:78px;height:78px;border-radius:50%;
+  background:radial-gradient(circle at 36% 30%,#ff9ed4,#b00060);
+  border:3px solid #d4a030;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;
+  box-shadow:0 0 0 4px rgba(212,160,48,0.25),0 6px 20px rgba(160,0,80,0.45);
+  font-size:1.7rem;
+}
+
+.sc-greet{
+  font-family:'Cinzel',serif;
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  color:#4a2000;
+  letter-spacing:3px;
+  text-shadow:1px 2px 3px rgba(160,100,20,0.3);
+  margin-bottom:4px;
+}
+.sc-name{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(1.6rem,4.5vw,2.4rem);
+  color:#7a3000;
+  margin-bottom:20px;
+}
+
+/* horizontal rule with filigree */
+.sc-rule{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;margin:0 auto 20px;width:85%;
+}
+.sc-rule-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,#b08030,#7a5010,#b08030,transparent);}
+.sc-rule-icon{font-family:'Cinzel',serif;font-size:1rem;color:#9a6010;opacity:0.7;flex-shrink:0;}
+
+/* body text */
+.sc-body{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(0.9rem,2.2vw,1.05rem);
+  color:#2e1200;
+  line-height:2.15;
+  text-align:left;
+  white-space:pre-line;
+  margin-bottom:20px;
+}
+.sc-hl{
+  font-family:'Great Vibes',cursive;
+  font-size:1.3rem;color:#8a3800;
+}
+
+/* corner filigrees */
+.fg{position:absolute;font-family:'Cinzel',serif;font-size:1.1rem;color:#9a6010;opacity:0.5;pointer-events:none;z-index:3;}
+.fg-tl{top:12px;left:12px;}.fg-tr{top:12px;right:12px;}
+.fg-bl{bottom:12px;left:12px;}.fg-br{bottom:12px;right:12px;}
+
+.sc-sign{font-family:'Great Vibes',cursive;font-size:1.8rem;color:#6a2800;margin-bottom:4px;}
+.sc-date{
+  font-family:'Cinzel',serif;font-size:0.62rem;
+  color:#9a6820;letter-spacing:5px;margin-bottom:22px;
+  text-shadow:0 1px 2px rgba(120,70,10,0.2);
+}
+
+.sc-close{
+  display:inline-block;
+  padding:12px 36px;
+  background:linear-gradient(135deg,#b07020,#7a4800);
+  border:2px solid #d4a030;
+  border-radius:50px;color:#fff8e0;
+  font-family:'Cinzel',serif;font-size:0.82rem;letter-spacing:3px;
+  cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;
+  box-shadow:0 6px 20px rgba(120,70,0,0.45);
+  position:relative;z-index:2;
+}
+.sc-close:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(120,70,0,0.6);}
+
+/* ── SEALED STATE (before open) ── */
+.sealed-view{
+  width:min(520px,92vw);
+  display:flex;flex-direction:column;align-items:center;
+  position:relative;z-index:1;
+  margin-bottom:32px;
+  transition:opacity 0.5s;
+}
+.sealed-view.hidden{opacity:0;pointer-events:none;height:0;overflow:hidden;margin:0;}
+
+.sealed-envelope{
+  width:min(340px,85vw);
+  height:220px;
+  position:relative;
+  cursor:pointer;
+  transition:transform 0.3s;
+}
+.sealed-envelope:hover{transform:translateY(-6px);}
+
+.env-body{
+  position:absolute;inset:0;
+  background:#fff;border-radius:10px;
+  border:2px solid #e8c0d8;
+  box-shadow:0 14px 50px rgba(233,30,140,0.2),0 3px 12px rgba(0,0,0,0.1);
+  overflow:hidden;
+}
+.env-bottom{position:absolute;bottom:0;left:0;right:0;height:56%;background:linear-gradient(175deg,#fce4f0,#ffcce6);clip-path:polygon(0 100%,50% 0%,100% 100%);}
+.env-left{position:absolute;top:0;left:0;width:51%;height:100%;background:linear-gradient(90deg,#fff6fa,#ffecf4);clip-path:polygon(0 0,100% 50%,0 100%);}
+.env-right{position:absolute;top:0;right:0;width:51%;height:100%;background:linear-gradient(270deg,#fff6fa,#ffecf4);clip-path:polygon(0 50%,100% 0,100% 100%);}
+.env-stripe-t{position:absolute;top:0;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,#ff6eb4 0,#ff6eb4 10px,transparent 10px,transparent 20px);opacity:0.45;}
+.env-stripe-b{position:absolute;bottom:0;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,#ff6eb4 0,#ff6eb4 10px,transparent 10px,transparent 20px);opacity:0.45;}
+
+.env-flap{
+  position:absolute;top:-2px;left:-2px;right:-2px;height:52%;
+  transform-origin:top center;
+  transform-style:preserve-3d;
+  z-index:10;
+  transition:transform 1s cubic-bezier(0.4,0,0.2,1);
+}
+.env-flap.open{transform:rotateX(-180deg);}
+.env-flap-face{
+  position:absolute;inset:0;
+  background:linear-gradient(178deg,#fff 50%,#ffe8f4 100%);
+  border:2px solid #e8c0d8;border-bottom:none;
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  border-radius:10px 10px 0 0;
+}
+
+.env-seal-btn{
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  width:84px;height:84px;border-radius:50%;
+  background:radial-gradient(circle at 36% 30%,#ff9ed4,#c0006a);
+  border:3px solid #ffd700;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Righteous',cursive;font-size:0.62rem;letter-spacing:1px;color:#fff5e0;text-transform:uppercase;
+  box-shadow:0 0 0 4px rgba(255,215,0,0.2),0 6px 20px rgba(192,0,106,0.4);
+  z-index:5;cursor:pointer;
+  transition:transform 0.3s,opacity 0.4s;
+  text-align:center;line-height:1.3;
+}
+.env-seal-btn:hover{transform:translateX(-50%) scale(1.1);}
+
+/* scroll-stage hidden initially */
+.scroll-stage{
+  width:min(520px,92vw);
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:32px;
+}
+.scroll-stage.visible{display:flex;}
+
+/* footer */
+.footer-msg{font-family:'Great Vibes',cursive;font-size:clamp(1.3rem,3.5vw,1.9rem);color:#e91e8c;margin:10px 0 20px;text-align:center;}
+.back-btn{display:inline-block;padding:12px 42px;background:linear-gradient(135deg,#e91e8c,#c084fc);border:none;border-radius:60px;color:#fff;font-family:'Righteous',cursive;font-size:0.95rem;text-decoration:none;transition:transform 0.2s;box-shadow:0 8px 22px rgba(233,30,140,0.4);}
+.back-btn:hover{transform:translateY(-3px);}
+
+.particle{position:fixed;pointer-events:none;z-index:9999;animation:floatP 2.8s forwards;}
+@keyframes floatP{0%{opacity:1;transform:translateY(0) rotate(0deg);}100%{opacity:0;transform:translateY(-100vh) rotate(720deg);}}
+
+@media(max-width:480px){
+  .parchment{padding:24px 18px 30px;}
+  .sc-greet{font-size:1.3rem;}
+  .sc-body{font-size:0.88rem;line-height:2;}
+}
+</style>
+</head>
+<body>
+<div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div>
+<div class="confetti-bg" id="confettiBg"></div>
+<div class="music-bar">
+  <span class="music-note">🎵</span>
+  <span class="music-label"> ♪</span>
+  <button class="music-toggle" id="musicToggle">▶</button>
+</div>
+<audio id="bgMusic" loop preload="auto"><source src="senjitaley.mp3" type="audio/mpeg"></audio>
+
+<div class="page">
+  <div class="gifts-header">
+    <span class="header-emoji">💌 🌸 💌</span>
+    <div class="gifts-title">A Letter For You</div>
+    <div class="gifts-sub">Just for Sidu Moonji Beniksha 🌸</div>
+    <div class="gifts-hint" id="hintText">✨ Touch the seal to unroll your letter ✨</div>
+  </div>
+
+  <!-- SEALED ENVELOPE (initial state) -->
+  <div class="sealed-view" id="sealedView">
+    <div class="sealed-envelope" id="sealedEnv">
+      <div class="env-body">
+        <div class="env-bottom"></div>
+        <div class="env-left"></div>
+        <div class="env-right"></div>
+        <div class="env-stripe-t"></div>
+        <div class="env-stripe-b"></div>
+      </div>
+      <div class="env-flap" id="envFlap">
+        <div class="env-flap-face"></div>
+      </div>
+      <div class="env-seal-btn" id="sealBtn" onclick="triggerOpen()">touch<br/>♡</div>
+    </div>
+  </div>
+
+  <!-- SCROLL (hidden until opened) -->
+  <div class="scroll-stage" id="scrollStage">
+    <!-- Top roller -->
+    <div class="roller roller-top">
+      <div class="roller-ring left"></div>
+      <div class="roller-ring right"></div>
+    </div>
+
+    <!-- Parchment (animates open) -->
+    <div class="scroll-wrap" id="scrollWrap">
+      <div class="parchment">
+        <div class="stain s1"></div><div class="stain s2"></div>
+        <div class="stain s3"></div><div class="stain s4"></div>
+        <div class="crinkle ck1"></div><div class="crinkle ck2"></div>
+        <span class="fg fg-tl">❧</span><span class="fg fg-tr">❧</span>
+        <span class="fg fg-bl">✦</span><span class="fg fg-br">✦</span>
+
+        <div class="sc">
+          <div class="ornament">— ✦ ❧ ✦ —</div>
+          <div class="wax-seal">💌</div>
+          <div class="sc-greet">My Feelings</div>
+          <div class="sc-name">Sidu Moonji Beniksha!</div>
+
+          <div class="sc-rule">
+            <div class="sc-rule-line"></div>
+            <span class="sc-rule-icon">❧</span>
+            <div class="sc-rule-line"></div>
+          </div>
+
+          <div class="sc-body">
+Ennaku direct ah pesa therla 🥹❤️‍🩹
+
+Nee na ennaku pudikum ❤️🫶🏻 unnoda siripu 😁💗 antha thethu pallu 🦷🤭💘 atha na romba rasichu iruka 🥹✨
+
+Ennakae theriyama unna romba rasichu iruka 🫠❤️‍🔥 Innum sollanum na, Muthamizh Mandram appo nee saree la vantha la 🥹❤️‍🩹 appovae unna romba rasika start pannita 🤍🦋 Friend ah irunthutu ithella thappu nu theriyum 🥲💭 aana ennakae theriyama ithellam pannita ❤️‍🩹🫶🏻
+
+Athum antha rendu mudi munnala vitu vantha style uh 😭💗🎀 ayyo romba pudichu pochu 🫠❤️✨ Ithellam direct ah solla ennaku thairiyam illa 🥹🤌🏻 Ithellam oru naal nee padichu paapa nu nambura 💌🫶🏻 Kandipa itha oru naal padipa nu nambika iruku 💫🤍
+
+Oru friend ah vum irunthutu antha ponna vera oru feelings ah vum pakurathu evalo kastam nu enna maari pasangaluku tha theriyum 🥺❤️‍🩹 Ithellam sollanum thonum, but athukana time varumbothu sollikalam nu vitruva 🫠💭💔
+
+Apram ithellam ennaku love ah illa enna nu therla 🥹🤍 But ithuvum oru vidha feelings tha ❤️‍🩹🫶🏻 but love ah nu ennakae therla 😶‍🌫️💗
+
+Hmm... unkita ithellam vanthu sollanum aasa 🥺💌 aana ithellam sonna en kitta pesama poiruviyo nu sollala 🥲💔 Un kaiya pudichu kanna pathu ithellam sollanum nu nenacha 🫴🏻🥹❤️ aana athellam nadakathu nu theriyum 🫠🤍
+
+Ennaku un shoulder mela kaiya potu edutha photos lam romba special 🥹📸💗 Atha na daily um pathuruven 🫶🏻💌 Apram en thol mela kaiya vachu kudutha pose la romba pudichathu 🥹❤️‍🔥📸
+
+Whatever... ithellam ennoda feelings, ennoda manasula thonunathu 🫀❤️‍🩹 Atha unta kandipa oru naal solliyae aaganum nu nenacha 🥹💭 aana solla mudiyala...
+
+Na konjam shy type uh 😭🙈💗 So ennoda style of website layae sollita 💻💌✨
+
+Ithellam padichu pathutu ennaku text pannanum nu thonuchuna pannu 🥹📩💗 Unnoda thoughts enna nu na therinjuka aasa padura 🤍🫶🏻
+
+Na sollita... itha ennoda manasula irunthuchu 🥹❤️‍🩹 Na unakku unmaiya iruka, avalotha 🫂🤍
+
+Na itha kadaisi vara sollamae marachu iruntha, ennakae thonum "solli irukalamae" nu 🥲💭💔 So sollita... 🥹💌✨
+
+**Ithu ennoda manasula iruntha chinna secret... ippo unakku therinjiduchu.** 🫣❤️‍🩹💗
+
+🦋✨🤍
+
+Thank you for being YOU —
+<span class="sc-hl">my absolute favourite person.</span> 💕
+
+Today, tomorrow, and always —
+<span class="sc-hl">you are loved.</span> 💖</div>
+
+          <div class="sc-rule">
+            <div class="sc-rule-line"></div>
+            <span class="sc-rule-icon">✦</span>
+            <div class="sc-rule-line"></div>
+          </div>
+
+          <div class="sc-sign">With all my love,</div>
+          <div class="sc-date">✦ MAY 31 · FOREVER &amp; ALWAYS ✦</div>
+          <button class="sc-close" onclick="closeScroll()">⊗ &nbsp; Roll Up &amp; Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom roller -->
+    <div class="roller roller-bot">
+      <div class="roller-ring left"></div>
+      <div class="roller-ring right"></div>
+    </div>
+  </div>
+
+  <div class="footer-msg">With endless love &amp; magic for you! 💖</div>
+  <a class="back-btn" href="gifts.html">🎁 &nbsp; Back to Gifts</a>
+</div>
+
+<script>
+/* ── Confetti ── */
+(function(){
+  const bg=document.getElementById('confettiBg');
+  const colors=['#ffb6d9','#ffd6ee','#f9a8d4','#c084fc','#ffd700','#ff80b5','#e879f9'];
+  for(let i=0;i<48;i++){
+    const c=document.createElement('div');c.className='conf';
+    const s=(4+Math.random()*9)+'px';
+    c.style.cssText=`width:${s};height:${s};background:${colors[i%colors.length]};left:${Math.random()*100}vw;animation-duration:${9+Math.random()*12}s;animation-delay:${Math.random()*14}s;border-radius:${Math.random()>0.5?'50%':'3px'};`;
+    bg.appendChild(c);
+  }
+})();
+
+/* ── Music ── */
+const audio=document.getElementById('bgMusic');
+const btn=document.getElementById('musicToggle');
+let playing=false;
+audio.volume=0.4;
+audio.play().then(()=>{playing=true;btn.textContent='⏸';}).catch(()=>{});
+btn.addEventListener('click',()=>{
+  if(playing){audio.pause();playing=false;btn.textContent='▶';}
+  else{audio.play().then(()=>{playing=true;btn.textContent='⏸';});}
+});
+
+/* ── Open scroll ── */
+let opened=false;
+
+function triggerOpen(){
+  if(opened) return;
+  opened=true;
+
+  // 1. Flip the envelope flap open
+  document.getElementById('envFlap').classList.add('open');
+  document.getElementById('hintText').textContent='📜 Unrolling your vintage letter...';
+  spawnParticles(14);
+
+  // 2. After flap flips, hide envelope, show scroll
+  setTimeout(()=>{
+    document.getElementById('sealedView').classList.add('hidden');
+    document.getElementById('scrollStage').classList.add('visible');
+
+    // 3. Small delay then unroll parchment
+    setTimeout(()=>{
+      document.getElementById('scrollWrap').classList.add('opened');
+      spawnParticles(20);
+      document.getElementById('hintText').textContent='🎉 Your vintage letter has been revealed!';
+    }, 150);
+  }, 900);
+}
+
+function closeScroll(){
+  // Roll back up
+  const wrap=document.getElementById('scrollWrap');
+  wrap.classList.remove('opened');
+  document.getElementById('hintText').textContent='✨ Touch the seal to unroll your letter again ✨';
+  setTimeout(()=>{
+    document.getElementById('scrollStage').classList.remove('visible');
+    document.getElementById('sealedView').classList.remove('hidden');
+    // reset flap
+    document.getElementById('envFlap').classList.remove('open');
+    opened=false;
+  }, 900);
+}
+
+/* ── Particles ── */
+function spawnParticles(n){
+  const em=['🎉','🎊','✨','💖','🌟','🎈','💕','🌸','🎀','💫','💌','🌺','💝','⭐'];
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');p.className='particle';
+      p.textContent=em[Math.floor(Math.random()*em.length)];
+      p.style.left=(5+Math.random()*90)+'vw';
+      p.style.top=(10+Math.random()*70)+'vh';
+      p.style.fontSize=(0.9+Math.random()*1.5)+'rem';
+      p.style.animationDuration=(2+Math.random()*2.2)+'s';
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),3200);
+    },i*65);
+  }
+}
+setInterval(()=>{
+  if(Math.random()>0.72){
+    const p=document.createElement('div');p.className='particle';
+    p.textContent=['✨','⭐','💫','🌸'][Math.floor(Math.random()*4)];
+    p.style.left=Math.random()*100+'vw';p.style.top=Math.random()*100+'vh';
+    p.style.fontSize=(10+Math.random()*14)+'px';
+    p.style.animationDuration=(2+Math.random()*2.5)+'s';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),3000);
+  }
+},2800);
+</script>
+</body>
+</html>

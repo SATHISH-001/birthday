@@ -28,7 +28,7 @@ body{
 .music-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#e91e8c;}
 
 /* PAGE */
-.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:44px 20px 80px;width:100%;}
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:44px 20px 100px;width:100%;}
 
 /* HEADER */
 .gifts-header{text-align:center;margin-bottom:30px;width:100%;}
@@ -41,20 +41,21 @@ body{
 @keyframes hintPulse{from{opacity:0.5;}to{opacity:1;}}
 
 /* ══════════════════════════════
-   SCROLL STAGE — the whole thing
+   SCROLL STAGE
 ══════════════════════════════ */
 .scroll-stage{
-  width:min(520px,92vw);
-  display:flex;
+  width:min(640px,90vw);
+  display:none;
   flex-direction:column;
   align-items:center;
   position:relative;
   margin-bottom:32px;
 }
+.scroll-stage.visible{display:flex;}
 
 /* ── WOODEN ROLLER ── */
 .roller{
-  width:calc(100% + 40px);
+  width:calc(100% + 24px);
   height:50px;
   border-radius:25px;
   position:relative;
@@ -78,13 +79,11 @@ body{
     #c07820 84%, #a06010 100%);
   box-shadow:0 -8px 22px rgba(0,0,0,0.5),0 -2px 6px rgba(200,150,50,0.3),inset 0 -2px 4px rgba(255,230,140,0.25);
 }
-/* wood grain */
 .roller::after{
   content:'';position:absolute;inset:0;border-radius:25px;
   background:repeating-linear-gradient(90deg,transparent 0,transparent 22px,rgba(0,0,0,0.1) 22px,rgba(0,0,0,0.1) 24px,transparent 24px,transparent 46px,rgba(255,200,100,0.1) 46px,rgba(255,200,100,0.1) 48px);
   pointer-events:none;
 }
-/* round end-caps */
 .roller::before{
   content:'';position:absolute;top:50%;left:-4px;right:-4px;
   height:56px;transform:translateY(-50%);
@@ -92,7 +91,6 @@ body{
   z-index:-1;
   box-shadow:0 0 0 3px rgba(160,100,10,0.5);
 }
-/* carved rings on caps */
 .roller-ring{
   position:absolute;top:50%;transform:translateY(-50%);
   width:44px;height:44px;border-radius:50%;
@@ -102,18 +100,23 @@ body{
 .roller-ring.left{left:-8px;background:radial-gradient(circle at 35% 30%,#d49030,#7a4808);}
 .roller-ring.right{right:-8px;background:radial-gradient(circle at 35% 30%,#d49030,#7a4808);}
 
-/* ── THE SCROLL WRAPPER (clips parchment) ── */
+/* ── SCROLL WRAPPER: auto-height, works for ANY length of text ── */
 .scroll-wrap{
   width:96%;
-  overflow:hidden;
-  /* height animates from 0 to full on open */
-  max-height:0;
-  transition:max-height 1.8s cubic-bezier(0.16,1,0.3,1);
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows 1.8s cubic-bezier(0.16,1,0.3,1);
   position:relative;
   z-index:5;
 }
-.scroll-wrap.opened{
-  max-height:2000px;
+.scroll-wrap.opened{grid-template-rows:1fr;}
+.scroll-inner{min-height:0;overflow:hidden;}
+
+/* fallback for very old browsers (no grid-row animation): just show everything */
+@supports not (grid-template-rows:0fr){
+  .scroll-wrap{display:block;}
+  .scroll-inner{display:none;}
+  .scroll-wrap.opened .scroll-inner{display:block;}
 }
 
 /* ── PARCHMENT ── */
@@ -121,7 +124,6 @@ body{
   width:100%;
   position:relative;
   padding:36px 34px 40px;
-  /* rich aged paper */
   background:
     radial-gradient(ellipse 80% 40% at 25% 20%, rgba(210,160,60,0.22) 0%, transparent 70%),
     radial-gradient(ellipse 60% 50% at 75% 75%, rgba(190,130,40,0.18) 0%, transparent 65%),
@@ -132,22 +134,13 @@ body{
       #f6e890 42%, #ecd478 55%,
       #f4e494 68%, #e8cc70 80%,
       #f2e090 92%, #ead878 100%);
-  /* left & right border only — rollers are the top/bottom */
   border-left:4px solid #a87020;
   border-right:4px solid #a87020;
-  overflow:hidden;
 }
-
-/* lined paper texture */
 .parchment::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(
-    transparent 0px, transparent 27px,
-    rgba(160,100,20,0.13) 28px
-  );
+  background:repeating-linear-gradient(transparent 0px, transparent 27px, rgba(160,100,20,0.13) 28px);
 }
-
-/* darkened / burnt vignette edges */
 .parchment::after{
   content:'';position:absolute;inset:0;pointer-events:none;
   background:
@@ -157,30 +150,24 @@ body{
     radial-gradient(ellipse 100% 12px at 50% 100%, rgba(60,30,0,0.3) 0%, transparent 100%);
 }
 
-/* stains */
 .stain{position:absolute;border-radius:50%;pointer-events:none;}
 .s1{width:70px;height:50px;background:rgba(150,90,10,0.09);top:12%;left:6%;transform:rotate(-15deg);}
 .s2{width:50px;height:65px;background:rgba(130,75,5,0.07);bottom:22%;right:8%;transform:rotate(20deg);}
 .s3{width:35px;height:25px;background:rgba(170,110,30,0.07);top:52%;left:68%;}
 .s4{width:20px;height:30px;background:rgba(140,80,10,0.08);top:28%;right:18%;}
 
-/* crinkle lines */
 .crinkle{position:absolute;pointer-events:none;opacity:0.18;}
-.crinkle::after{content:'';position:absolute;background:rgba(120,70,10,0.5);}
 .ck1{top:35%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(120,70,10,0.2),rgba(120,70,10,0.4),rgba(120,70,10,0.2),transparent);transform:rotate(-0.4deg);}
 .ck2{top:65%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(100,60,5,0.15),rgba(100,60,5,0.35),rgba(100,60,5,0.15),transparent);transform:rotate(0.3deg);}
 
 /* ── SCROLL CONTENT ── */
 .sc{position:relative;z-index:2;text-align:center;}
 
-/* ornamental divider */
 .ornament{
   font-family:'Cinzel',serif;
   font-size:0.9rem;letter-spacing:12px;
   color:#8a5800;margin-bottom:14px;opacity:0.75;
 }
-
-/* wax seal stamp at top */
 .wax-seal{
   width:78px;height:78px;border-radius:50%;
   background:radial-gradient(circle at 36% 30%,#ff9ed4,#b00060);
@@ -190,31 +177,23 @@ body{
   box-shadow:0 0 0 4px rgba(212,160,48,0.25),0 6px 20px rgba(160,0,80,0.45);
   font-size:1.7rem;
 }
-
 .sc-greet{
   font-family:'Cinzel',serif;
   font-size:clamp(1.5rem,4vw,2.2rem);
-  color:#4a2000;
-  letter-spacing:3px;
+  color:#4a2000;letter-spacing:3px;
   text-shadow:1px 2px 3px rgba(160,100,20,0.3);
   margin-bottom:4px;
 }
 .sc-name{
   font-family:'Great Vibes',cursive;
   font-size:clamp(1.6rem,4.5vw,2.4rem);
-  color:#7a3000;
-  margin-bottom:20px;
+  color:#7a3000;margin-bottom:20px;
 }
-
-/* horizontal rule with filigree */
-.sc-rule{
-  display:flex;align-items:center;justify-content:center;
-  gap:10px;margin:0 auto 20px;width:85%;
-}
+.sc-rule{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 20px;width:85%;}
 .sc-rule-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,#b08030,#7a5010,#b08030,transparent);}
 .sc-rule-icon{font-family:'Cinzel',serif;font-size:1rem;color:#9a6010;opacity:0.7;flex-shrink:0;}
 
-/* body text */
+/* body text — wraps fully, never clipped */
 .sc-body{
   font-family:'IM Fell English',serif;
   font-size:clamp(0.9rem,2.2vw,1.05rem);
@@ -222,14 +201,14 @@ body{
   line-height:2.15;
   text-align:left;
   white-space:pre-line;
+  overflow-wrap:break-word;
+  word-wrap:break-word;
+  word-break:normal;
+  max-width:100%;
   margin-bottom:20px;
 }
-.sc-hl{
-  font-family:'Great Vibes',cursive;
-  font-size:1.3rem;color:#8a3800;
-}
+.sc-hl{font-family:'Great Vibes',cursive;font-size:1.3rem;color:#8a3800;}
 
-/* corner filigrees */
 .fg{position:absolute;font-family:'Cinzel',serif;font-size:1.1rem;color:#9a6010;opacity:0.5;pointer-events:none;z-index:3;}
 .fg-tl{top:12px;left:12px;}.fg-tr{top:12px;right:12px;}
 .fg-bl{bottom:12px;left:12px;}.fg-br{bottom:12px;right:12px;}
@@ -240,7 +219,6 @@ body{
   color:#9a6820;letter-spacing:5px;margin-bottom:22px;
   text-shadow:0 1px 2px rgba(120,70,10,0.2);
 }
-
 .sc-close{
   display:inline-block;
   padding:12px 36px;
@@ -254,7 +232,7 @@ body{
 }
 .sc-close:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(120,70,0,0.6);}
 
-/* ── SEALED STATE (before open) ── */
+/* ── SEALED STATE ── */
 .sealed-view{
   width:min(520px,92vw);
   display:flex;flex-direction:column;align-items:center;
@@ -301,7 +279,6 @@ body{
   clip-path:polygon(0 0,100% 0,50% 100%);
   border-radius:10px 10px 0 0;
 }
-
 .env-seal-btn{
   position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
   width:84px;height:84px;border-radius:50%;
@@ -316,16 +293,6 @@ body{
 }
 .env-seal-btn:hover{transform:translateX(-50%) scale(1.1);}
 
-/* scroll-stage hidden initially */
-.scroll-stage{
-  width:min(520px,92vw);
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  margin-bottom:32px;
-}
-.scroll-stage.visible{display:flex;}
-
 /* footer */
 .footer-msg{font-family:'Great Vibes',cursive;font-size:clamp(1.3rem,3.5vw,1.9rem);color:#e91e8c;margin:10px 0 20px;text-align:center;}
 .back-btn{display:inline-block;padding:12px 42px;background:linear-gradient(135deg,#e91e8c,#c084fc);border:none;border-radius:60px;color:#fff;font-family:'Righteous',cursive;font-size:0.95rem;text-decoration:none;transition:transform 0.2s;box-shadow:0 8px 22px rgba(233,30,140,0.4);}
@@ -335,9 +302,13 @@ body{
 @keyframes floatP{0%{opacity:1;transform:translateY(0) rotate(0deg);}100%{opacity:0;transform:translateY(-100vh) rotate(720deg);}}
 
 @media(max-width:480px){
-  .parchment{padding:24px 18px 30px;}
+  .page{padding:36px 14px 100px;}
+  .scroll-stage{width:90vw;}
+  .parchment{padding:26px 18px 30px;}
   .sc-greet{font-size:1.3rem;}
-  .sc-body{font-size:0.88rem;line-height:2;}
+  .sc-body{font-size:0.9rem;line-height:2;}
+  .ornament{letter-spacing:8px;}
+  .sc-date{letter-spacing:3px;}
 }
 </style>
 </head>
@@ -378,14 +349,13 @@ body{
 
   <!-- SCROLL (hidden until opened) -->
   <div class="scroll-stage" id="scrollStage">
-    <!-- Top roller -->
     <div class="roller roller-top">
       <div class="roller-ring left"></div>
       <div class="roller-ring right"></div>
     </div>
 
-    <!-- Parchment (animates open) -->
     <div class="scroll-wrap" id="scrollWrap">
+      <div class="scroll-inner">
       <div class="parchment">
         <div class="stain s1"></div><div class="stain s2"></div>
         <div class="stain s3"></div><div class="stain s4"></div>
@@ -396,8 +366,10 @@ body{
         <div class="sc">
           <div class="ornament">— ✦ ❧ ✦ —</div>
           <div class="wax-seal">💌</div>
-          <div class="sc-greet">My Feelings</div>
-          <div class="sc-name">Sidu Moonji Beniksha!</div>
+          <div class="sc-greet">My Personal Points</div>
+          <div class="sc-name">Sidu Moonji Beniksha!
+          </div>
+          <div class="sc-greet">(every point does it matter porumaiya padi konjam length ah irukum...!!!)</div>
 
           <div class="sc-rule">
             <div class="sc-rule-line"></div>
@@ -406,7 +378,77 @@ body{
           </div>
 
           <div class="sc-body">
-U R ALWAYS MY PRIORTIESS FRDD...
+Itha paaru Beniksha,
+
+Actual ah unkitta naa solla vena nu thaan nenachen. Athuvum nee ivlo seekrama open panni paapa nu naa expect pannave illa. 
+
+Naa enna nenachen na, eppadiyum nee un busy schedule la itha open panni paaka maata. Maybe one or two years kalichu paapa. Appo paakura appo Indha maari oruthan namma college life la namma mela ivlo feelings vechirundhirukaan nu unakku therinja nalla irukkum nu nenachu thaan appadi onnu edit pannen.
+
+But nee itha unexpected ah open panni paathathu enakku shock aana matter thaan. 
+
+Oru friend nu sollitu pazhagittu irukkum pothu, naduvula vandhu unna pudichirukku, un mela oru feelings irukku nu share panna, athu oru maari thaan irukkum. I can understand that.
+
+Naa pannathu thappu thaan illa nu solla varala. Ennaala en feelings ah control panna mudiyala. So, I wanted to share  Naa WhatsApp la illa Instagram la kooda sollirukkalaam. Enakku sollurathukku athu periya vishayam illa. But naa itha yen website moolama share pannen na, maybe one or two years kalichu nee thirumba paakura appo, Someone show u some love at college life nu nenachu paatha konjam nalla irukkum nu 
+
+Muttal thanamaana oru vishayaatha panni iruka, aana ippo en manasula irundhu genuine ah oru sila vishiyatha share pandra. Unna appadi oru kannottathula paakanum nu nenachu pazhagala. Enakke theriyama thaan un mela oru feelings level kulla poitten.
+
+Kaviya ku kooda theriyum unna pudichirukku nu . Ava kooda sonna Neenga sollirunga. Un feelings ah akka kitta share pannunga. Avanga unna accept pannalum sari, illanalum sari, un feelings ah share pannom nu un manasukku nimmadhiya irukkum nu sonna.
+
+Appo kooda naa Venaam oru vela thappa aagitta enna panrathu? nu yosichen. 😔
+
+Naa edhaiyum easy ah solla maaten. Oru vishayatha sollurathukku munnaadi neraya yosippen. Nee kooda notice panniruppa. Naa neraya time Apram soldren, apram soldren nu solliruppen. Athukku reason naa yosichu pesura oru character.
+
+Time varumbothu sollikalaam nu vittuten. Aana at the back of my mind love ngra commitment kulla poitta, athu rendu perume yosichu edukka vendiya decision nu enakku theriyum. ❤️
+
+Andha commitment la porathukku neraya yosikkanum. Yenna athu rendu peroda life ah mattum illa, rendu peroda family-yum affect pannakoodiya vishayam. Athu avlo easy aana matter illa.
+
+Namma college la neraya peru love ndra pera la starting la kedaikkura care , excitement la love nu sollittu suthittu irukkaanga. Aana, enna poruthavaraikkum, love na starting la kedaikkura antha care and feelings
+
+antha ponno illa paiyano starting la irundhu end varaikkum, evlo prachanai vandhaalum, entha situation vandhaalum, andha person ah kai vidaama, same love oda irukkurathu thaan love. ❤️🫂
+
+Rendu perum oruthar oruthara purinjukittu, rendu family-yum affect aagama, understanding oda oru life ah build pannurathukku neraya maturity-um responsibility-yum venum.
+
+Ivlo yosichu paatha, namma reality ku idhu sari pattu varaathu nu enakku thonuchu. Naa oru mistake pannitten nu thonuchu.
+
+Unna paatha andha oru excitement la thaan, athuvum Muthamizh Mandram mudinju evening thaan, indha maari oru mistake pannitten. At the back , naa pannathu correct nu prove panna varala. I just want to share you. 🥺
+
+Naa ivlo open ah irukkurathukku reason, athu ennoda nature ah irukalam illana atha ennoda character. Atha nee purinjikanum nu thaan share panren.
+
+Nee thirumba en kooda pesanum nu naa itha sollala. Unakku enna thonutho, nee enna decision edukka virumburiyo, athu un ishtam. I respect that. 🤝❤️
+
+En life la pala pera lose pannirukken. Athukku vera vera reasons irukkalaam. Sila per en kitta vandhu pesumbothu naa avangala avoid pannirukken, ignore pannirukken. Appadiye konjam konjama avangala lose pannitten.
+
+Aana unna indha maari oru vishayathula lose pannida koodathu nu thaan un kitta yosichu paaru nu decision edu sudden ah sollatha nu sonna.
+
+May be nee enna tha yosichu pathalum, palaya maari en kooda pesa mudiyathu . Oru person un kitta feelings oda pesirukaan nu therinja apram mum unakku uncomfortable ah irukkalaam. Unakku athu sariyaa varaama kooda pogalaam. I can understand that. 🥹
+
+Whatever, ennoda college life oda end moment la oru person ah lose panni thaan mudiyanum nu irundha, athu appadiye nadakkattum. 🙂
+
+Ivlo vum nee padichu paathuttu irundha, naa you're really great.❤️
+
+And thanks for everything. 🫂✨
+
+Naa oru thadava solliruppen Pavithra ku apram unna thaan enakku romba pudichathu nu. Athu summa sonna vaartha illa .Ennoda manasula irundhu vandha words thaan. Because I genuinely liked your character unoda  way of expression, nee pesura vidham, un personality — ellame enakku pudichichathu. Athunaala thaan unkitta ivlo close ah pazhaginaen. ❤️
+
+Maybe andha bond ah naa thaan destroy pannitteno nu ippo yosikkiren. 💔
+
+Ithella sollanum nu nenacha, innum neraya irukku. Aana ellathaiyum solli unakku innum uncomfortable ah aakka virumbala.
+
+Un life journey nalla kondu po.. Be happy, be successful, and have a beautiful future.✨
+
+Nee nenacha government job ah kandippa crack panniduva nu enakku nambikkai irukku.  Athu varaikkum vera ethulayum distract aagama, un goals mela focus pannu.
+
+Enna maari loosu pasanga Unna pudichirukku, feelings irukku nu sollittu varuvaanga. 😅😂 Appo nee thaan decide pannanum. Un family situation enna, un goals enna, unakku enna sari nu thonuthu  athukku etha maari nee react panniko. Un personal decisions la vera yaarum interfere panna thevai illa.
+
+Maybe nee nenachu irukalam na college la vera department la irukkura oru friend ah thaan nee enna paathiruppa. Aana naa unna appadi paakala. Naa en life long journey varaikkum unna kooda kondu poganum nu thaan aasa patten. ❤️🥹
+
+Aana idhellam ippadi nadakkum nu naa nenachu kooda paakala.
+
+Nee enna pathi eppadi vena nenachu irukalam anaa naa share pannathu sollanum thonunathu.
+
+Take care of yourself, Beniksha. ❤️🫂
+
+Un life la nee nenacha ella vishayamum nadakkanum. Nalla padi, nalla job vaangu, un family ah happy ah vechuko. Un future romba nalla irukkanum nu manasaara wish panren.❤️
 
 Thank you for being YOU —
 <span class="sc-hl">my absolute favourite person.</span> 💕
@@ -425,9 +467,9 @@ Today, tomorrow, and always —
           <button class="sc-close" onclick="closeScroll()">⊗ &nbsp; Roll Up &amp; Close</button>
         </div>
       </div>
+      </div>
     </div>
 
-    <!-- Bottom roller -->
     <div class="roller roller-bot">
       <div class="roller-ring left"></div>
       <div class="roller-ring right"></div>
@@ -459,7 +501,7 @@ audio.volume=0.4;
 audio.play().then(()=>{playing=true;btn.textContent='⏸';}).catch(()=>{});
 btn.addEventListener('click',()=>{
   if(playing){audio.pause();playing=false;btn.textContent='▶';}
-  else{audio.play().then(()=>{playing=true;btn.textContent='⏸';});}
+  else{audio.play().then(()=>{playing=true;btn.textContent='⏸';}).catch(()=>{});}
 });
 
 /* ── Open scroll ── */
@@ -468,18 +510,16 @@ let opened=false;
 function triggerOpen(){
   if(opened) return;
   opened=true;
+  if(!playing){audio.play().then(()=>{playing=true;btn.textContent='⏸';}).catch(()=>{});}
 
-  // 1. Flip the envelope flap open
   document.getElementById('envFlap').classList.add('open');
   document.getElementById('hintText').textContent='📜 Unrolling your vintage letter...';
   spawnParticles(14);
 
-  // 2. After flap flips, hide envelope, show scroll
   setTimeout(()=>{
     document.getElementById('sealedView').classList.add('hidden');
     document.getElementById('scrollStage').classList.add('visible');
 
-    // 3. Small delay then unroll parchment
     setTimeout(()=>{
       document.getElementById('scrollWrap').classList.add('opened');
       spawnParticles(20);
@@ -489,17 +529,16 @@ function triggerOpen(){
 }
 
 function closeScroll(){
-  // Roll back up
   const wrap=document.getElementById('scrollWrap');
   wrap.classList.remove('opened');
+  window.scrollTo({top:0,behavior:'smooth'});
   document.getElementById('hintText').textContent='✨ Touch the seal to unroll your letter again ✨';
   setTimeout(()=>{
     document.getElementById('scrollStage').classList.remove('visible');
     document.getElementById('sealedView').classList.remove('hidden');
-    // reset flap
     document.getElementById('envFlap').classList.remove('open');
     opened=false;
-  }, 900);
+  }, 1800);
 }
 
 /* ── Particles ── */
